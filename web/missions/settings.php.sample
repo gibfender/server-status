@@ -1,0 +1,16 @@
+<?php
+//Unit Details
+$groupname = "";
+$groupsite = "https://www.sitename.com";
+$groupdiscord = "https://discord.gg/INVITECODE";
+
+//MySQL Login credentials, use what you set in setup.sql
+$servername = "127.0.0.1";
+$username = "USERNAME";
+$password = "PASSWORD";
+$dbname = "DBNAME";
+
+//MPMissions Directory
+$missionsdir = "C:/dir/to/Arma/MPMissions/";
+
+?>
