@@ -24,12 +24,12 @@ if ($conn->connect_error) {
 
     //metadata Properties
     $missionname = $_POST['missionname'];
-		$minplayers = $_POST['minplayers'];
-		$maxplayers = $_POST['maxplayers'];
-		$terrain = $_POST['terrain'];
-		$author = $_POST['author'];
-		$description = $_POST['description'];
-		$gamemode = $_POST['gamemode'];
+        $minplayers = $_POST['minplayers'];
+        $maxplayers = $_POST['maxplayers'];
+        $terrain = $_POST['terrain'];
+        $author = $_POST['author'];
+        $description = $_POST['description'];
+        $gamemode = $_POST['gamemode'];
 
     //Work out the file extension
     $file_ext = explode('.', $file_name);
