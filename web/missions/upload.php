@@ -1,9 +1,19 @@
 <?php
-
+require 'settings.php';
 /*TODO When a new mission is uploaded, get php to generate a 4 character alphanumeric code. It can behave like a "password" for that file.(edited)
 And if they want to overwrite it they just enter the code. */
 
-  if(isset($_FILES['file'])) {
+// Create connection
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error); }
+
+
+  if(isset($_POST['submit'])) {
     $file = $_FILES['file'];
 
     //File Properties
@@ -12,32 +22,35 @@ And if they want to overwrite it they just enter the code. */
     $file_size = $file['size'];
     $file_error = $file['error'];
 
+    //metadata Properties
+    $missionname = $_POST['missionname'];
+		$minplayers = $_POST['minplayers'];
+		$maxplayers = $_POST['maxplayers'];
+		$terrain = $_POST['terrain'];
+		$author = $_POST['author'];
+		$description = $_POST['description'];
+		$gamemode = $_POST['gamemode'];
+
     //Work out the file extension
     $file_ext = explode('.', $file_name);
     $file_ext = strtolower(end($file_ext));
 
-    //specify which extensions are allowed
-    $allowed = array('pbo');
-
-    //check that the file should be uploaded
-    if (in_array($file_ext, $allowed)) {
-      if ($file_error == 0) {
-        if ($file_size <= 1000000) {
-          $file_destination = $missionsdir;
           //move the file from temp location to MPMissions folder
-          if(move_uploaded_file($file_tmp, $file_destination.$file_name)) {
-              echo "File Uploaded";
-          }
-        } else {
-          echo "Your filesize was too big!";
-        }
-      } else {
-        echo "There was an error with your upload";
-      }
-    } else {
-      echo "Extension not allowed!";
-    }
+          if(move_uploaded_file($file_tmp, $missionsdir.$file_name)) {
+            $query = "INSERT INTO missions(filename, name, minplayers, maxplayers, terrain, author, description, gamemode)
+                          VALUES ('$file_name', '$missionname', '$minplayers', '$maxplayers', '$terrain', '$author', '$description', '$gamemode')";
 
-  }
+}
+}
+
+if ($conn->query($query) === TRUE) {
+  echo "New record created successfully";
+}
+else {
+  echo "Error: " . $query . "<br />" . $conn->error;
+}
+
+$conn->close();
+
 
  ?>

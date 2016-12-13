@@ -41,7 +41,7 @@ require_once("servers.php");
 </head>
 <body>
 	<div id="nav-placeholder"></div>
-
+	
 <div style="text-align: center;" class="container-fluid">
 	<h2>ArmaGoons Server Status</h2>
 	<hr/>

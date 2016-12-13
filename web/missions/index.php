@@ -10,6 +10,7 @@
 	<script type="text/javascript" src="res/js/jquery-2.1.4.min.js"></script>
 	<link rel="shortcut icon" href="/res/images/favicon.ico">
 
+
 	<title><?php echo "$groupname"; ?> Missions</title>
 
   <script>
@@ -27,7 +28,7 @@
 			<h2>Missions</h2>
 		</div>
 		<div class="col-md-2">
-			<a class="btn btn-primary" href="upload1.php" role="button">Upload a mission</a>
+			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
 		</div>
 	</div>
 	<hr/>

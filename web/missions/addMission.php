@@ -1,20 +1,5 @@
 <?php require 'settings.php'; ?>
-<?php
 
- // starting the session
- $status = session_status();
-	if($status == PHP_SESSION_NONE){
-			//There is no active session
-			session_start();
-	}else
-	if($status == PHP_SESSION_DISABLED){
-			//Sessions are not available
-	}else
-	if($status == PHP_SESSION_ACTIVE){
-			//Destroy current and start new one
-			session_destroy();
-			session_start();
-	}?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,22 +18,13 @@
         $("#nav-placeholder").replaceWith(data);
     });
     </script>
-  <script language="javascript">
-function() submitForms{
-document.getElementById("file_upload").submit();
-document.getElementById("mission_meta").submit();
-}
-</script>
 </head>
 
 <body>
 	<div id="nav-placeholder"></div>
 
 	<div class="container">
-    <?php
-    session_start(); // Session starts here.
-    ?>
-		<form class="form-horizontal" id="mission_meta" action="upload2.php" method="post"  enctype="multipart/form-data" role="form">
+		<form class="form-horizontal" id="mission_meta" action="upload.php" method="post"  enctype="multipart/form-data" role="form">
 			<legend>Mission Details</legend>
 			<div class="form-group">
 				<label for="missionname" class="col-sm-2">Mission Name</label>
@@ -125,27 +101,18 @@ document.getElementById("mission_meta").submit();
           <input type="textarea" rows="8" cols="50" class="form-control" name="description" id="description" placeholder="Russian marine assault on British-held town.">
         </div>
       </div>
-
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-warning" name="submit" id="submit">Next</button>
+      <legend>Select File</legend>
+      <div class="form-group">
+        <label for="file">Select a file to upload</label>
+        <div class="col-sm-10">
+          <input type="file" name="file" required>
+        </div>
+				<div class="col-sm-2">
+					<button type="submit" class="btn btn-warning" name="submit" id="submit">Upload</button>
 				</div>
 			</div>
 		</form>
 	</div>
-
-
-<?php
-	 if (isset($_POST['Submit'])) {
-	 $_SESSION['missionname'] = $_POST['missionname'];
-	 $_SESSION['author'] = $_POST['author'];
-	 $_SESSION['minplayers'] = $_POST['minplayers'];
-	 $_SESSION['maxplayers'] = $_POST['maxplayers'];
-	 $_SESSION['terrain'] = $_POST['terrain'];
-	 $_SESSION['gamemode'] = $_POST['gamemode'];
-	 $_SESSION['description'] = $_POST['description'];
-	 }
-	?>
 </body>
 
 </html>
