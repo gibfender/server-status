@@ -19,6 +19,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 
 ## Credits
 
-* Firefly2442: For his gameQ implementation of server monitor https://github.com/firefly2442/phparma2serverstatus
-* TheGodDamnSexRobot: for help with bugfixes and sense-checks
-* Verox: For getting me started down this road with his server-information system https://github.com/Verox-/server-information-system
+* __Firefly2442__: For his gameQ implementation of server monitor https://github.com/firefly2442/phparma2serverstatus
+* __TheGodDamnSexRobot__: for help with bugfixes and sense-checks
+* __Verox__: For getting me started down this road with his server-information system https://github.com/Verox-/server-information-system
+* __Iaroslav Vassiliev__for maketable.php https://github.com/CodeDriller/maketable
