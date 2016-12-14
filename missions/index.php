@@ -25,7 +25,7 @@
 <div class="container">
   <div class="row">
 		<div class="col-md-10">
-			<h2>Missions</h2>
+			<h2>Live Missions</h2>
 		</div>
 		<div class="col-md-2">
 			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
@@ -37,13 +37,48 @@
       <?php
         include_once 'maketable.php';
 
-        $sql = 'SELECT `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description` FROM `missions`';
+        $sql = 'SELECT `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description`, `broken` FROM `missions` WHERE `broken`="0"';
         try {
             $conn = new PDO( "mysql:host=$servername;dbname=$dbname", "$username", "$password" );
             $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
             echo maketable(
                 $executed_pdo_statement = $conn->query( $sql ),
-                $column_headers = array('Mission Name', 'Map', 'Author', 'Game Mode',  'Min. Players', 'Max. Players', 'Description'),
+                $column_headers = array('Mission Name', 'Map', 'Author', 'Game Mode',  'Min. Players', 'Max. Players', 'Description', 'Status'),
+                $column_align = array('left', 'left', 'center'),
+                $first_indent = "\t\t\t",
+                $indent = "\t",
+                $id = 'clients-table',
+                $class = 'table',
+                $style = 'padding: 0px; margin: 0px;'
+            );
+        } catch( PDOException $e ) {
+            echo '<p>DATABASE ERROR:<br/>' . $e->getMessage() . '<br/>SQL query: ' . $sql . '</p>';
+        }
+        $conn = null;
+         ?>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+		<div class="col-md-12">
+			<h2>Broken Missions</h2>
+		</div>
+	</div>
+	<hr/>
+	<div class="row">
+		<div class="col-md-10">
+      <?php
+        include_once 'maketable.php';
+
+        $sql = 'SELECT `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description`, `broken` FROM `missions` WHERE `broken`="1"';
+        try {
+            $conn = new PDO( "mysql:host=$servername;dbname=$dbname", "$username", "$password" );
+            $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+            echo maketable(
+                $executed_pdo_statement = $conn->query( $sql ),
+                $column_headers = array('Mission Name', 'Map', 'Author', 'Game Mode',  'Min. Players', 'Max. Players', 'Description', 'Status'),
                 $column_align = array('left', 'left', 'center'),
                 $first_indent = "\t\t\t",
                 $indent = "\t",
