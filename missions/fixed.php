@@ -10,4 +10,6 @@ if(isset($_POST['id'])) {
   $conn = null;
 }
 
+rename($brokendir.$_POST['filename'], $missionsdir.$_POST['filename']);
+
 ?>
