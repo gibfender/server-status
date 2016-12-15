@@ -150,13 +150,7 @@ $('#btn-broken<?php echo $row['id'] ?>').click(function(){
 	$.ajax({
      url: 'broken.php',
      type: "POST",
-     data: {"<?php echo $row['id'] ?>"},
-     success: function(){
-			 console.log("yup");
-     },
-		 error: function(){
-			 console.log("nope");
-		 }
+     data: {id: id},
 });
 });
 
