@@ -12,5 +12,6 @@ $dbname = "DBNAME";
 
 //MPMissions Directory
 $missionsdir = "C:/dir/to/Arma/MPMissions/";
+$brokendir = "C:/dir/to/Broken/";
 
 ?>

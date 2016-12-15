@@ -91,7 +91,13 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
-
+<script>
+$(document).ready(function() {
+    $('#brokenmissions').DataTable( {
+        "order": [[ 5, "desc" ]]
+    } );
+} );
+</script>
 <div class="container">
   <div class="row">
 		<div class="col-md-12">
@@ -101,7 +107,7 @@ $(document).ready(function() {
 	<hr/>
 	<div class="row">
 		<div class="col-md-12">
-			<table class='table'>
+			<table id="brokenmissions" class='table'>
 				<thead>
 					<!--<th>Filename</th>
 					<th>ID</th>-->
