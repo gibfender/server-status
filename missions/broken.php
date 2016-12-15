@@ -8,6 +8,7 @@ if(isset($_POST['id'])) {
   $stmt = $conn->prepare("UPDATE missions SET broken='1' WHERE id=('".$_POST['id']."')");
   $stmt->execute();
   $conn = null;
-}
+};
 
+rename($missionsdir.$_POST['filename'], $brokendir.$_POST['filename'])
 ?>

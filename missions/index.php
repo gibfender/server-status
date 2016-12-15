@@ -46,6 +46,7 @@ $(document).ready(function() {
 		<div class="col-md-12">
 			<table id='livemissions' class='table display'>
 				<thead>
+					<th>Filename</th>
 					<th>ID</th>
 					<th>Mission Name</th>
 					<th>Map</th>
@@ -61,11 +62,12 @@ $(document).ready(function() {
 						try {
 									$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
 									$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-									$stmt = $conn->prepare("SELECT `id`, `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description`, `broken` FROM `missions` WHERE `broken`='0'");
+									$stmt = $conn->prepare("SELECT `filename`, `id`, `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description`, `broken` FROM `missions` WHERE `broken`='0'");
 									$stmt->execute();
 									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
 									<tr>
+										<td><?php echo $row['filename'] ?></td>
 										<td><?php echo $row['id'] ?></td>
 									  <td><?php echo $row['name'] ?></td>
 									  <td><?php echo $row['terrain'] ?></td>
@@ -74,7 +76,7 @@ $(document).ready(function() {
 									  <td><?php echo $row['minplayers'] ?></td>
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
-										<td><button type="button" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-map="<?php echo($row['id']); ?>">Mark as Broken</button></td>
+										<td><button type="button" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-map="<?php echo($row['id']); ?>" data-file="<?php echo($row['filename']); ?>">Mark as Broken</button></td>
 									</tr>
 							<?php }
 						}
@@ -101,6 +103,7 @@ $(document).ready(function() {
 		<div class="col-md-12">
 			<table class='table'>
 				<thead>
+					<th>Filename</th>
 					<th>ID</th>
 					<th>Mission Name</th>
 					<th>Map</th>
@@ -116,11 +119,12 @@ $(document).ready(function() {
 						try {
 									$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
 									$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-									$stmt = $conn->prepare("SELECT `id`, `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description` FROM `missions` WHERE `broken`='1'");
+									$stmt = $conn->prepare("SELECT `filename`, `id`, `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description` FROM `missions` WHERE `broken`='1'");
 									$stmt->execute();
 									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
 									<tr>
+										<td><?php echo $row['filename'] ?></td>
 										<td><?php echo $row['id'] ?></td>
 									  <td><?php echo $row['name'] ?></td>
 									  <td><?php echo $row['terrain'] ?></td>
@@ -129,7 +133,7 @@ $(document).ready(function() {
 									  <td><?php echo $row['minplayers'] ?></td>
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
-									  <td><button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>">Mark as Fixed</button></td>
+									  <td><button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-file="<?php echo($row['filename']); ?>">Mark as Fixed</button></td>
 									</tr>
 							<?php }
 						}
@@ -144,13 +148,21 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+
 <script type="text/javascript">
 $('.btn-broken').click(function(){
     var id = $(this).data('map');
+		var file = $(this).data('file');
     $.ajax({
      url: 'broken.php',
      type: "POST",
-     data: {id: id},
+     data: {id: id,
+		 				file: file
+					},
+		 success : function(data) {
+
+		location.reload();
+}
 });
 });
 </script>
@@ -158,10 +170,17 @@ $('.btn-broken').click(function(){
 <script type="text/javascript">
 $('.btn-fixed').click(function(){
     var id = $(this).data('map');
+		var file = $(this).data('file');
     $.ajax({
      url: 'fixed.php',
      type: "POST",
-     data: {id: id},
+     data: {id: id,
+		 				file: file
+					},
+		 success : function(data) {
+
+		location.reload();
+}
 });
 });
 </script>
