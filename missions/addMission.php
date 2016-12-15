@@ -50,7 +50,7 @@
 				<label for="terrain" class="col-sm-2">Map</label>
 				<div class="col-sm-4">
 					<select class="form-control" name="terrain" id="terrain">
-						<option>Altis</option>
+						<option selected="selected">Altis</option>
 						<option>Stratis</option>
 						<option>Virtual Reality</option>
 						<option>Tanoa</option>
@@ -80,7 +80,7 @@
             <option>Undefined</option>
             <option>Deathmatch</option>
             <option>Capture The Flag</option>
-            <option>Cooperative Scenario</option>
+            <option selected="selected">Cooperative Scenario</option>
             <option>Capture The Island</option>
             <option>Sector Control</option>
             <option>Team Deathmatch</option>

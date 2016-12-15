@@ -44,7 +44,8 @@ if ($conn->connect_error) {
 }
 
 if ($conn->query($query) === TRUE) {
-  echo "New record created successfully";
+  header('Location: /index.php');
+  exit;
 }
 else {
   echo "Error: " . $query . "<br />" . $conn->error;

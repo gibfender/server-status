@@ -1,6 +1,6 @@
 # server-status
 
-A web-based Arma 3 server monitoring and mission-management system. 
+A web-based Arma 3 server monitoring and mission-management system.
 
 ## Requirements
 
@@ -9,7 +9,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 
 ## Instructions
 
-* Edit setup.sql, replacing `USERNAME` and `PASSWORD` with your desired username and password 
+* Edit setup.sql, replacing `USERNAME` and `PASSWORD` with your desired username and password
 * Run setup.sql to create DB, table and user
 * Edit settings.php.sample with your groups details and the DB login you previously set
 * Rename `settings.php.sample` to `settings.php`
@@ -19,7 +19,6 @@ A web-based Arma 3 server monitoring and mission-management system.
 
 ## Credits
 
-* __Firefly2442__: For his gameQ implementation of server monitor https://github.com/firefly2442/phparma2serverstatus
+* __Firefly2442__: For his GameQ implementation of server monitor https://github.com/firefly2442/phparma2serverstatus
 * __TheGodDamnSexRobot__: for help with bugfixes and sense-checks
 * __Verox__: For getting me started down this road with his server-information system https://github.com/Verox-/server-information-system
-* __Iaroslav Vassiliev__ for maketable.php https://github.com/CodeDriller/maketable
