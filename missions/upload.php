@@ -38,7 +38,15 @@ if ($conn->connect_error) {
           //move the file from temp location to MPMissions folder
           if(move_uploaded_file($file_tmp, $missionsdir.$file_name)) {
             $query = "INSERT INTO missions(filename, name, minplayers, maxplayers, terrain, author, description, gamemode)
-                          VALUES ('$file_name', '$missionname', '$minplayers', '$maxplayers', '$terrain', '$author', '$description', '$gamemode')";
+                          VALUES ('$file_name', '$missionname', '$minplayers', '$maxplayers', '$terrain', '$author', '$description', '$gamemode')
+                          ON DUPLICATE KEY UPDATE
+                          name = '$missionname',
+                          minplayers = '$minplayers',
+                          maxplayers = '$maxplayers',
+                          terrain = '$terrain',
+                          author = '$author',
+                          description = '$description',
+                          gamemode = '$gamemode'";
 
 }
 }

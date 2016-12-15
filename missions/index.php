@@ -38,7 +38,7 @@ $(document).ready(function() {
 			<h2>Live Missions</h2>
 		</div>
 		<div class="col-md-2">
-			<!--<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>-->
+			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
 		</div>
 	</div>
 	<hr/>
@@ -69,7 +69,7 @@ $(document).ready(function() {
 									<tr>
 										<!--<td><?php echo $row['filename'] ?></td>
 										<td><?php echo $row['id'] ?></td>-->
-									  <td><?php echo $row['name'] ?></td>
+									  <td><a href="<?php echo "http://srv1missions.armagoons.com/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
 									  <td><?php echo $row['terrain'] ?></td>
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['gamemode'] ?></td>
