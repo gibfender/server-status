@@ -129,7 +129,7 @@ $(document).ready(function() {
 									  <td><?php echo $row['minplayers'] ?></td>
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
-									  <td><button type="button" id="btn-fixed" name="btn-fixed" class="btn btn-success btn-sm" data-map="<?php echo($row['id']); ?>">Report as Fixed</button></td>
+									  <td><button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>">Mark as Fixed</button></td>
 									</tr>
 							<?php }
 						}
