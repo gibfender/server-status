@@ -38,7 +38,7 @@ $(document).ready(function() {
 			<h2>Live Missions</h2>
 		</div>
 		<div class="col-md-2">
-			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
+			<!--<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>-->
 		</div>
 	</div>
 	<hr/>
@@ -74,7 +74,7 @@ $(document).ready(function() {
 									  <td><?php echo $row['minplayers'] ?></td>
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
-									  <td><button type="button" id="btn-broken<?php echo $row['id'] ?>" name="btn-broken<?php echo $row['id'] ?>" class="btn btn-danger btn-sm">Report as Broken</button></td>
+										<td><button type="button" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-map="<?php echo($row['id']); ?>">Mark as Broken</button></td>
 									</tr>
 							<?php }
 						}
@@ -98,7 +98,7 @@ $(document).ready(function() {
 	</div>
 	<hr/>
 	<div class="row">
-		<div class="col-md-10">
+		<div class="col-md-12">
 			<table class='table'>
 				<thead>
 					<th>ID</th>
@@ -129,7 +129,7 @@ $(document).ready(function() {
 									  <td><?php echo $row['minplayers'] ?></td>
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
-									  <td><button type="button" id="btn-fixed<?php echo $row['id'] ?>" name="btn-fixed" class="btn btn-success btn-sm">Report as Broken</button></td>
+									  <td><button type="button" id="btn-fixed" name="btn-fixed" class="btn btn-success btn-sm" data-map="<?php echo($row['id']); ?>">Report as Fixed</button></td>
 									</tr>
 							<?php }
 						}
@@ -145,17 +145,24 @@ $(document).ready(function() {
   </div>
 </div>
 <script type="text/javascript">
-$('#btn-broken<?php echo $row['id'] ?>').click(function(){
-	var id = '<?php echo $row['id'] ?>';
-	$.ajax({
+$('.btn-broken').click(function(){
+    var id = $(this).data('map');
+    $.ajax({
      url: 'broken.php',
      type: "POST",
      data: {id: id},
 });
 });
+</script>
 
-$('#btn-fixed').click(function(){
-
+<script type="text/javascript">
+$('.btn-fixed').click(function(){
+    var id = $(this).data('map');
+    $.ajax({
+     url: 'fixed.php',
+     type: "POST",
+     data: {id: id},
+});
 });
 </script>
  </body>
