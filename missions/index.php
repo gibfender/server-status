@@ -33,8 +33,6 @@ $(document).ready(function() {
 </script>
 <div id="nav-placeholder"></div>
 
-
-
 <div class="container">
   <div class="row">
 		<div class="col-md-10">
@@ -79,7 +77,7 @@ $(document).ready(function() {
 									  <td><?php echo $row['minplayers'] ?></td>
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
-										<td><button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-danger btn-sm" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>">Mark as Broken</button></td>
+										<td><button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>">Mark as Broken</button></td>
 									</tr>
 							<?php }
 						}
@@ -128,7 +126,7 @@ $(document).ready(function() {
 									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
 									<tr>
-										<td><?php echo $row['name'] ?></td>
+										<td><a href="<?php echo "http://broken.armagoons.com/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['brokentype'] ?></td>
 									  <td><?php echo $row['brokendes'] ?></td>
