@@ -13,8 +13,12 @@ CREATE TABLE `missions` (
   `description` varchar(255) CHARACTER SET utf8 NOT NULL,
   `gamemode` varchar(45) NOT NULL,
   `broken` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+  `brokentype` varchar(45) DEFAULT NULL,
+  `brokendes` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `filename_UNIQUE` (`filename`)
+) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=latin1;
+
 
 
 CREATE USER 'USERNAME'@'localhost' IDENTIFIED BY 'PASSWORD!';
