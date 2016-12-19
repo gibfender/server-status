@@ -51,27 +51,32 @@
 				<div class="col-sm-4">
 					<select class="form-control" name="terrain" id="terrain">
 						<option selected="selected">Altis</option>
-						<option>Stratis</option>
-						<option>Virtual Reality</option>
-						<option>Tanoa</option>
             <option>Bukovina</option>
             <option>Bystrica</option>
             <option>Chernarus</option>
-            <option>Chernarus Summer</option>
+            <option>Desert Island</option>
             <option>Desert</option>
+            <option>Everon</option>
+            <option>Isla Abramia</option>
+            <option>Kolgujev</option>
+            <option>Malden</option>
+            <option>Nogova</option>
             <option>Porto</option>
             <option>Proving Grounds</option>
             <option>Rahmadi</option>
             <option>Sahrani</option>
             <option>Shapur</option>
             <option>Southern Sahrani</option>
-            <option>Takistan</option>
+            <option>Stratis</option>
+            <option>Summer Chernarus</option>
             <option>Takistan Mountains</option>
+            <option>Takistan</option>
+            <option>Tanoa</option>
             <option>United Sahrani</option>
             <option>Utes</option>
+            <option>Virtual Reality</option>
+            <option>Vt5 - Suomi Finland</option>
             <option>Zargabad</option>
-            <option>Abramia</option>
-            <option>VT5</option>
 					</select>
 				</div>
         <label for="gamemode" class="col-sm-2">Game Mode</label>
@@ -107,7 +112,9 @@
         <div class="col-sm-10">
           <input type="file" name="file" required>
         </div>
-				<div class="col-sm-2">
+				<div class="btn-group">
+          <hr/>
+          <a class="btn btn-info" href="index.php" name="back" id="back">Back</a>
 					<button type="submit" class="btn btn-warning" name="submit" id="submit">Upload</button>
 				</div>
 			</div>

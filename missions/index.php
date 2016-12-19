@@ -32,6 +32,9 @@ $(document).ready(function() {
 } );
 </script>
 <div id="nav-placeholder"></div>
+
+
+
 <div class="container">
   <div class="row">
 		<div class="col-md-10">
@@ -76,7 +79,7 @@ $(document).ready(function() {
 									  <td><?php echo $row['minplayers'] ?></td>
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
-										<td><button type="button" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>">Mark as Broken</button></td>
+										<td><button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-danger btn-sm" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>">Mark as Broken</button></td>
 									</tr>
 							<?php }
 						}
@@ -94,7 +97,7 @@ $(document).ready(function() {
 <script>
 $(document).ready(function() {
     $('#brokenmissions').DataTable( {
-        "order": [[ 5, "desc" ]]
+
     } );
 } );
 </script>
@@ -109,36 +112,26 @@ $(document).ready(function() {
 		<div class="col-md-12">
 			<table id="brokenmissions" class='table'>
 				<thead>
-					<!--<th>Filename</th>
-					<th>ID</th>-->
-					<th>Mission Name</th>
-					<th>Map</th>
-					<th>Author</th>
-					<th>Game Mode</th>
-					<th>Min. Players</th>
-					<th>Max. Players</th>
-					<th>Description</th>
-					<th>Report</th>
+						<th>Mission Name</th>
+						<th>Author</th>
+						<th>Failure Category</th>
+						<th>Failure Description</th>
+						<th>Report</th>
 				</thead>
 				<tbody>
 					<?php
 						try {
 									$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
 									$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-									$stmt = $conn->prepare("SELECT `filename`, `id`, `name`, `terrain`, `author`, `gamemode`, `minplayers`, `maxplayers`, `description` FROM `missions` WHERE `broken`='1'");
+									$stmt = $conn->prepare("SELECT `filename`, `id`, `name`, `author`, `brokentype`, `brokendes`, `broken` FROM `missions` WHERE `broken`='1'");
 									$stmt->execute();
 									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
 									<tr>
-										<!--<td><?php echo $row['filename'] ?></td>
-										<td><?php echo $row['id'] ?></td>-->
-									  <td><?php echo $row['name'] ?></td>
-									  <td><?php echo $row['terrain'] ?></td>
+										<td><?php echo $row['name'] ?></td>
 									  <td><?php echo $row['author'] ?></td>
-									  <td><?php echo $row['gamemode'] ?></td>
-									  <td><?php echo $row['minplayers'] ?></td>
-									  <td><?php echo $row['maxplayers'] ?></td>
-									  <td><?php echo $row['description'] ?></td>
+									  <td><?php echo $row['brokentype'] ?></td>
+									  <td><?php echo $row['brokendes'] ?></td>
 									  <td><button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>">Mark as Fixed</button></td>
 									</tr>
 							<?php }
