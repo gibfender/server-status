@@ -1,4 +1,7 @@
-<?php require 'settings.php';?>
+<?php
+require_once 'settings.php';
+require_once 'query-servers.php' ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +15,25 @@
 	<script type="text/javascript" src="res/js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/r-2.1.0/datatables.min.js"></script>
 
+	<script>
+		$(document).ready(function() {
 
+			//use asynchronous AJAX call via JQuery to query the servers in the backend
+			//this way it's not blocking the loading of the page
+			var datastring = 'query-servers=true';
+			$.ajax({
+				type: "POST",
+				url: "query-servers.php",
+				data: datastring,
+				success: function(data) {
+					//show information in our div
+					$('.server-data').show().html(data);
+
+				}
+			});
+
+		});
+	</script>
 
 	<script>
 		$.get("res/nav.html", function(data) {
@@ -36,6 +57,28 @@ $(document).ready(function() {
   <div class="row">
 		<div class="col-md-10">
 			<h2>Live Missions</h2>
+
+			<?php
+
+			// Call the class, and add your servers.
+    $gq = \GameQ\GameQ::factory();
+    $gq->addServers($servers);
+    // You can optionally specify some settings
+    $gq->setOption('timeout', 3); //in seconds
+    // Send requests, and parse the data
+    $results = $gq->process();
+
+			foreach ($results as $key => $server) {
+				if ($server['gq_mapname'] == '') {
+					$locked = 'False';
+				} else {
+					$locked = 'True';
+				}
+			}
+			 ?>
+
+
+			<h4>Server locked: <?php echo $locked ?> </h4>
 		</div>
 		<div class="col-md-2">
 			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
