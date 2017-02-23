@@ -122,8 +122,9 @@ $(document).ready(function() {
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
-											<button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-toggle="broken-tooltip" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-warning btn-sm btn-broken" data-toggle="broken-tooltip" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
 											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" disabled data-toggle="update-tooltip" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" disabled data-toggle="delete-tooltip" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -177,7 +178,11 @@ $(document).ready(function() {
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['brokentype'] ?></td>
 									  <td><?php echo $row['brokendes'] ?></td>
-									  <td><button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>">Mark as Fixed</button></td>
+									  <td>
+											<button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-ok"></span></button>
+											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" disabled data-toggle="update-tooltip" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" disabled data-toggle="delete-tooltip" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+										</td>
 									</tr>
 							<?php }
 						}
