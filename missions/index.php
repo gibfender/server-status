@@ -23,7 +23,6 @@
 </head>
 
 <body>
-
 <script>
 $(document).ready(function() {
     $('#livemissions').DataTable( {
@@ -57,7 +56,7 @@ $(document).ready(function() {
 					<th>Max. Players</th>
 					<th>Description</th>
 					<th>Last Updated</th>
-					<th>Report</th>
+					<th>Manage</th>
 				</thead>
 				<tbody>
 					<?php
@@ -79,7 +78,10 @@ $(document).ready(function() {
 									  <td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
-										<td><button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>">Mark as Broken</button></td>
+										<td>
+											<button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-danger btn-sm btn-broken" data-toggle="broken-tooltip" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" disabled data-toggle="update-tooltip" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+										</td>
 									</tr>
 							<?php }
 						}
