@@ -15,3 +15,21 @@ $missionsdir = "C:/dir/to/Arma/MPMissions/";
 $brokendir = "C:/dir/to/Broken/";
 
 ?>
+
+<?php
+
+//change this to reflect the servers that you want to query
+$servers = array(
+	array(
+		'id' => 'SRV1',
+		'type' => 'armedassault3',
+		'host' => '0.0.0.0:2302',
+	),
+	array(
+		'id' => 'SRV2',
+		'type' => 'armedassault3',
+		'host' => '0.0.0.0:2402'
+	)
+);
+
+?>
