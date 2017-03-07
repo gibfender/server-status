@@ -1,6 +1,7 @@
 <?php
 require_once '../settings.php';
-require_once( "query-servers.php"); ?>
+require_once( "query-servers.php");
+require "login/loginheader.php"; ?>
 
 <!DOCTYPE html>
 <html lang="en">
