@@ -1,4 +1,5 @@
-<?php require '../settings.php'; ?>
+<?php require '../settings.php';
+require "login/loginheader.php"; ?>
 
 <!DOCTYPE html>
 <html lang="en">
