@@ -21,7 +21,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 
 ```
 <VirtualHost *:80>
-	ServerName monitor.armagoons.com
+	ServerName monitor.domain.com
 	DocumentRoot "C:\wamp\www\server-status\missions"
 	DirectoryIndex monitor.php
 	<Directory  "C:\wamp\www\server-status\missions">
@@ -31,7 +31,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName missions.armagoons.com
+	ServerName missions.domain.com
 	DocumentRoot "C:\wamp\www\server-status\missions"
 	<Directory "C:\wamp\www\server-status\missions">
 		AllowOverride All
@@ -40,7 +40,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName srv1missions.armagoons.com
+	ServerName srv1missions.domain.com
 	DocumentRoot "C:\Games\SRV1\MPMissions"
 	<Directory "C:\Games\SRV1\MPMissions/">
 		Options Indexes
@@ -48,7 +48,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName broken.armagoons.com
+	ServerName broken.domain.com
 	DocumentRoot "C:\Games\SRV1\Broken"
 	<Directory "C:\Games\SRV1\Broken/">
 		Options Indexes
@@ -56,7 +56,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName srv1rpt.armagoons.com
+	ServerName srv1rpt.domain.com
 	DocumentRoot "C:/Games/SRV1/SRV1
 	<Directory "C:/Games/SRV1/SRV1/">
 		AllowOverride All
@@ -65,7 +65,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 </VirtualHost>
 
 <VirtualHost *:80>
-	ServerName srv2rpt.armagoons.com
+	ServerName srv2rpt.domain.com
 	DocumentRoot "C:/Games/SRV2/SRV2
 	<Directory "C:/Games/SRV2/SRV2/">
 		AllowOverride All
