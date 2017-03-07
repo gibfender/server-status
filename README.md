@@ -19,7 +19,8 @@ A web-based Arma 3 server monitoring and mission-management system.
 
 ### H3 Sample apache virtual hosts setup:
 
-```<VirtualHost *:80>
+```
+<VirtualHost *:80>
 	ServerName monitor.armagoons.com
 	DocumentRoot "C:\wamp\www\server-status\missions"
 	DirectoryIndex monitor.php
@@ -36,7 +37,8 @@ A web-based Arma 3 server monitoring and mission-management system.
 		AllowOverride All
 		Require all granted
 	</Directory>
-</VirtualHost>```
+</VirtualHost>
+```
 
 ## Credits
 
