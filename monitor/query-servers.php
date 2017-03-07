@@ -1,5 +1,5 @@
 <?php
-require_once("servers.php");
+require_once( "../settings.php");
 require_once("res/gameq/src/GameQ/Autoloader.php");
 
 
@@ -122,7 +122,7 @@ function secondsToString($seconds) {
 			</div>
 			<div class="row">
 				<div class="col-md-6">
-					<?php echo "RPT: <a href='http://". $key . "rpt.armagoons.com'>Click to see server RPT</a>" ?>
+					<?php echo "RPT: <a href='http://". $key . "rpt.". $groupsite . "'>Click to see server RPT</a>" ?>
 				</div>
 			</div>
 		</div>

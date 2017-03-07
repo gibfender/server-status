@@ -1,5 +1,5 @@
 <?php
-require 'settings.php';
+require '../settings.php';
 /*TODO When a new mission is uploaded, get php to generate a 4 character alphanumeric code. It can behave like a "password" for that file.(edited)
 And if they want to overwrite it they just enter the code. */
 

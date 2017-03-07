@@ -1,6 +1,6 @@
 <?php
-require_once 'settings.php';
-require_once 'query-servers.php' ?>
+require_once '../settings.php';
+require_once( "../monitor/query-servers.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +36,15 @@ require_once 'query-servers.php' ?>
 	</script>
 
 	<script>
-		$.get("res/nav.html", function(data) {
+	$(document).ready(function(){
+	    $("#modal").click(function(){
+	        $("#myModal").modal();
+	    });
+	});
+	</script>
+
+	<script>
+		$.get("res/nav.php", function(data) {
 			$("#nav-placeholder").replaceWith(data);
 		});
 	</script>
@@ -56,7 +64,7 @@ $(document).ready(function() {
 <div class="container">
   <div class="row">
 		<div class="col-md-10">
-			<h2>Live Missions</h2>
+			<h1><?php echo "$groupname";?> Mission Management</h1>
 
 			<?php
 
@@ -85,6 +93,7 @@ $(document).ready(function() {
 		</div>
 	</div>
 	<hr/>
+	<h2>Live Missions</h2>
 	<div class="row">
 		<div class="col-md-12">
 			<table id='livemissions' class='table display'>
@@ -113,7 +122,7 @@ $(document).ready(function() {
 									<tr>
 										<!--<td><?php echo $row['filename'] ?></td>
 										<td><?php echo $row['id'] ?></td>-->
-										<td><a href="<?php echo "http://srv1missions.armagoons.com/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
+										<td><a href="<?php echo "http://srv1missions.$groupsite/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
 									  <td><?php echo $row['terrain'] ?></td>
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['gamemode'] ?></td>
@@ -122,9 +131,9 @@ $(document).ready(function() {
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
-											<button type="button" data-toggle="modal" data-target="#myModal" name="btn-broken" class="btn btn-warning btn-sm btn-broken" data-toggle="broken-tooltip" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
-											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" disabled data-toggle="update-tooltip" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" disabled data-toggle="delete-tooltip" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-broken" class="btn btn-warning btn-sm btn-broken" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -140,6 +149,24 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 $(document).ready(function() {
     $('#brokenmissions').DataTable( {
@@ -148,12 +175,12 @@ $(document).ready(function() {
 } );
 </script>
 <div class="container">
-  <div class="row">
+	<hr/>
+	<div class="row">
 		<div class="col-md-12">
 			<h2>Broken Missions</h2>
 		</div>
 	</div>
-	<hr/>
 	<div class="row">
 		<div class="col-md-12">
 			<table id="brokenmissions" class='table'>
@@ -174,14 +201,14 @@ $(document).ready(function() {
 									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
 									<tr>
-										<td><a href="<?php echo "http://broken.armagoons.com/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
+										<td><a href="<?php echo "http://broken.$groupsite/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['brokentype'] ?></td>
 									  <td><?php echo $row['brokendes'] ?></td>
 									  <td>
 											<button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-ok"></span></button>
-											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" disabled data-toggle="update-tooltip" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" disabled data-toggle="delete-tooltip" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -204,6 +231,24 @@ $('.btn-broken').click(function(){
 		var filename = $(this).data('filename');
     $.ajax({
      url: 'broken.php',
+     type: "POST",
+     data: {id: id,
+		 				filename: filename
+					},
+		 success : function(data) {
+
+		location.reload();
+}
+});
+});
+</script>
+
+<script type="text/javascript">
+$('.btn-delete').click(function(){
+    var id = $(this).data('map');
+		var filename = $(this).data('filename');
+    $.ajax({
+     url: 'delete.php',
      type: "POST",
      data: {id: id,
 		 				filename: filename

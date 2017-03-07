@@ -1,7 +1,7 @@
 <?php
 //Unit Details
 $groupname = "";
-$groupsite = "https://www.sitename.com";
+$groupsite = "sitename.com"; //don't include http:// or www. this is designed for subdomains so "http://missions.sitename.com"
 $groupdiscord = "https://discord.gg/INVITECODE";
 
 //MySQL Login credentials, use what you set in setup.sql
@@ -13,6 +13,7 @@ $dbname = "DBNAME";
 //MPMissions Directory
 $missionsdir = "C:/dir/to/Arma/MPMissions/";
 $brokendir = "C:/dir/to/Broken/";
+$deleteddir = "C:/dir/to/Delete/";
 
 ?>
 

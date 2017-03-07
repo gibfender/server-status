@@ -1,6 +1,6 @@
 <?php
 
-require 'settings.php';
+require '../settings.php';
 
 if(isset($_POST['id'])) {
   $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
