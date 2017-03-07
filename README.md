@@ -17,7 +17,7 @@ A web-based Arma 3 server monitoring and mission-management system.
 * Place `missions` and `monitor` folders in an internet-accessible location (I recommend subdomains so `http://missions.domain.com` and `http://monitor.domain.com`)
 * Make your servers MPmissions and RPT folders internet-accessible with the addresses 'http://srv1missions.domain.com' and 'http://srv1rpt.domain.com' (repeat for each server)
 
-### H3 Sample apache virtual hosts setup:
+### Sample apache virtual hosts setup:
 
 ```
 <VirtualHost *:80>
@@ -36,6 +36,40 @@ A web-based Arma 3 server monitoring and mission-management system.
 	<Directory "C:\wamp\www\server-status\missions">
 		AllowOverride All
 		Require all granted
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName srv1missions.armagoons.com
+	DocumentRoot "C:\Games\SRV1\MPMissions"
+	<Directory "C:\Games\SRV1\MPMissions/">
+		Options Indexes
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName broken.armagoons.com
+	DocumentRoot "C:\Games\SRV1\Broken"
+	<Directory "C:\Games\SRV1\Broken/">
+		Options Indexes
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName srv1rpt.armagoons.com
+	DocumentRoot "C:/Games/SRV1/SRV1
+	<Directory "C:/Games/SRV1/SRV1/">
+		AllowOverride All
+		Options Indexes
+	</Directory>
+</VirtualHost>
+
+<VirtualHost *:80>
+	ServerName srv2rpt.armagoons.com
+	DocumentRoot "C:/Games/SRV2/SRV2
+	<Directory "C:/Games/SRV2/SRV2/">
+		AllowOverride All
+		Options Indexes
 	</Directory>
 </VirtualHost>
 ```
