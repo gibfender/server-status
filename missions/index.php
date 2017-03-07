@@ -8,28 +8,24 @@ require_once( "query-servers.php"); ?>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href="res/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="res/css/custom.css">
 	<link rel="shortcut icon" href="/res/images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.13/r-2.1.0/datatables.min.css"/>
-	<script type="text/javascript" src="res/js/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript" src="res/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/r-2.1.0/datatables.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-colvis-1.2.4/cr-1.3.2/r-2.1.1/datatables.min.css"/>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-colvis-1.2.4/cr-1.3.2/r-2.1.1/datatables.min.js"></script>
+
 
 	<script>
 		$(document).ready(function() {
 
-			//use asynchronous AJAX call via JQuery to query the servers in the backend
-			//this way it's not blocking the loading of the page
 			var datastring = 'query-servers=true';
 			$.ajax({
 				type: "POST",
 				url: "query-servers.php",
 				data: datastring,
 				success: function(data) {
-					//show information in our div
 					$('.server-data').show().html(data);
-
 				}
 			});
 
@@ -137,9 +133,9 @@ $(document).ready(function() {
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
-											<button type="button" name="btn-broken-modal" class="btn btn-warning btn-sm btn-broken" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="broken-modal" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
-											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="delete-modal" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-broken-modal" class="btn btn-warning btn-sm btn-broken-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#broken-modal" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete (WIP)" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -154,25 +150,30 @@ $(document).ready(function() {
 			</table>
     </div>
   </div>
+			<div class="modal fade" id="broken-modal">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Flag Mission as Broken</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						X
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Please explain why you think this mission is broken:</p>
+						<p>Mission name: <?php echo "MISSION NAME" ?></p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="broken-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
+
+
+
 <script>
 $(document).ready(function() {
     $('#brokenmissions').DataTable( {
@@ -213,8 +214,8 @@ $(document).ready(function() {
 									  <td><?php echo $row['brokendes'] ?></td>
 									  <td>
 											<button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-ok"></span></button>
-											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -239,7 +240,7 @@ $('.btn-unlock').click(function(){
 	var url = "<?php echo "$fd_URL" ?>";
 
 	$.ajax({
-		url: "http://admin.armagoons.com:20604/login",
+		url: url+"/login",
 		type: "POST",
 		data: {
 			username: user,
