@@ -75,6 +75,11 @@ $(document).ready(function() {
 						$locked = 'False';
 					} else {
 						$locked = 'True';
+					};
+					if ($server['gq_numplayers'] > '0') {
+						$unlockable = 'True';
+					} else {
+						$unlockable = 'False';
 					}
 				}
 				}
@@ -83,6 +88,11 @@ $(document).ready(function() {
 
 
 			<h4>Server locked: <?php echo $locked ?> </h4>
+			<?php if ($fd_enabled == 'True') {
+				echo "<button name='btn-unlock' class='btn btn-success btn-unlock'";
+				if ($unlockable == 'True') {echo "disabled title='Cannot unlock as there are players connected.'";};
+				echo ">Unlock</button>";
+			} ?>
 		</div>
 		<div class="col-md-2">
 			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
@@ -127,9 +137,9 @@ $(document).ready(function() {
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
-											<button type="button" name="btn-broken" class="btn btn-warning btn-sm btn-broken" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
-											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-broken-modal" class="btn btn-warning btn-sm btn-broken" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="broken-modal" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="delete-modal" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -146,7 +156,7 @@ $(document).ready(function() {
   </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="broken-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -220,6 +230,28 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+$('.btn-unlock').click(function(){
+
+	var user = "<?php echo "$fd_user" ?>";
+	var pass = "<?php echo "$fd_pass" ?>";
+	var url = "<?php echo "$fd_URL" ?>";
+
+	$.ajax({
+		url: "http://admin.armagoons.com:20604/login",
+		type: "POST",
+		data: {
+			username: user,
+			password: pass
+		},
+		success : function(data) {
+	 location.reload();
+}
+	});
+
+});
+</script>
 
 <script type="text/javascript">
 $('.btn-broken').click(function(){

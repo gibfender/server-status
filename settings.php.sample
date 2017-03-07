@@ -1,7 +1,8 @@
 <?php
+
 //Unit Details
 $groupname = "";
-$groupsite = "sitename.com"; //don't include http:// or www. this is designed for subdomains so "http://missions.sitename.com"
+$groupsite = "sitename.com"; //don't include http:// or www. This service is designed for subdomains so "http://missions.sitename.com"
 $groupdiscord = "https://discord.gg/INVITECODE";
 
 //MySQL Login credentials, use what you set in setup.sql
@@ -15,9 +16,11 @@ $missionsdir = "C:/dir/to/Arma/MPMissions/";
 $brokendir = "C:/dir/to/Broken/";
 $deleteddir = "C:/dir/to/Delete/";
 
-?>
-
-<?php
+//Firedaemon Fusion settings
+$fd_enabled = "False"; //Set to "False" if you do not use Firedaemon to manage your servers
+$fd_URL = "http://admin.mydomain.com:20604"; //Root URL and port you use for FireDaemon fusion
+$fd_user = ""; // Username used to login to Firedaemon Fusion (I suggest creating a separate account on FireDaemon for this)
+$fd_pass = ""; //Password used to login to Firedaemon
 
 //change this to reflect the servers that you want to query
 $servers = array(
@@ -25,11 +28,6 @@ $servers = array(
 		'id' => 'SRV1',
 		'type' => 'armedassault3',
 		'host' => '0.0.0.0:2302',
-	),
-	array(
-		'id' => 'SRV2',
-		'type' => 'armedassault3',
-		'host' => '0.0.0.0:2402'
 	)
 );
 
