@@ -36,14 +36,6 @@ require_once( "query-servers.php"); ?>
 	</script>
 
 	<script>
-	$(document).ready(function(){
-	    $("#modal").click(function(){
-	        $("#myModal").modal();
-	    });
-	});
-	</script>
-
-	<script>
 		$.get("res/nav.php", function(data) {
 			$("#nav-placeholder").replaceWith(data);
 		});
