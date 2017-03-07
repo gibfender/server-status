@@ -122,7 +122,7 @@ $(document).ready(function() {
 									<tr>
 										<!--<td><?php echo $row['filename'] ?></td>
 										<td><?php echo $row['id'] ?></td>-->
-										<td><a href="<?php echo "http://srv1missions.armagoons.com/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
+										<td><a href="<?php echo "http://srv1missions.$groupsite/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
 									  <td><?php echo $row['terrain'] ?></td>
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['gamemode'] ?></td>
@@ -201,7 +201,7 @@ $(document).ready(function() {
 									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
 								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
 									<tr>
-										<td><a href="<?php echo "http://broken.armagoons.com/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
+										<td><a href="<?php echo "http://broken.$groupsite/".$row['filename'] ?>"><?php echo $row['name'] ?></a></td>
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['brokentype'] ?></td>
 									  <td><?php echo $row['brokendes'] ?></td>

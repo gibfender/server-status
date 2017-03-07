@@ -122,7 +122,7 @@ function secondsToString($seconds) {
 			</div>
 			<div class="row">
 				<div class="col-md-6">
-					<?php echo "RPT: <a href='http://". $key . "rpt.armagoons.com'>Click to see server RPT</a>" ?>
+					<?php echo "RPT: <a href='http://". $key . "rpt.". $groupsite . "'>Click to see server RPT</a>" ?>
 				</div>
 			</div>
 		</div>
