@@ -1,5 +1,5 @@
 <?php
-require_once("servers.php");
+require_once( "../settings.php");
 require_once("res/gameq/src/GameQ/Autoloader.php");
 
 

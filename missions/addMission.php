@@ -1,4 +1,4 @@
-<?php require 'settings.php'; ?>
+<?php require '../settings.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +14,7 @@
   	<title><?php echo "$groupname"; ?> Missions</title>
 
     <script>
-    $.get("res/nav.html", function(data){
+    $.get("res/nav.php", function(data){
         $("#nav-placeholder").replaceWith(data);
     });
     </script>
