@@ -1,6 +1,6 @@
 <?php
 require_once '../settings.php';
-require_once( "../monitor/query-servers.php"); ?>
+require_once( "query-servers.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,12 +77,15 @@ $(document).ready(function() {
     $results = $gq->process();
 
 			foreach ($results as $key => $server) {
-				if ($server['gq_mapname'] == '') {
-					$locked = 'False';
-				} else {
-					$locked = 'True';
+				if ($key == 'SRV1') {
+					if ($server['gq_mapname'] == '') {
+						$locked = 'False';
+					} else {
+						$locked = 'True';
+					}
 				}
-			}
+				}
+
 			 ?>
 
 
