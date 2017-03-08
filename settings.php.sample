@@ -16,7 +16,7 @@ $missionsdir = "C:/dir/to/Arma/MPMissions/";
 $brokendir = "C:/dir/to/Broken/";
 $deleteddir = "C:/dir/to/Delete/";
 
-//Firedaemon Fusion settings
+//Firedaemon Fusion settings 
 $fd_enabled = "False"; //Set to "False" if you do not use Firedaemon to manage your servers
 $fd_URL = "http://admin.mydomain.com:20604"; //Root URL and port you use for FireDaemon fusion
 $fd_user = ""; // Username used to login to Firedaemon Fusion (I suggest creating a separate account on FireDaemon for this)

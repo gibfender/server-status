@@ -286,7 +286,7 @@ $('.btn-delete').click(function(){
 }
 });
 });
-</script>
+</script> 
 
 <script type="text/javascript">
 $('.btn-fixed').click(function(){
