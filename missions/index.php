@@ -133,8 +133,8 @@ $(document).ready(function() {
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
-											<button type="button" name="btn-broken-modal" class="btn btn-warning btn-sm btn-broken-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#broken-modal" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
-											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-broken-modal" class="btn btn-warning btn-sm" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-id="<?php echo($row['id']); ?>" title="Report as broken"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-target="#update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
 											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete (WIP)" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
@@ -150,27 +150,7 @@ $(document).ready(function() {
 			</table>
     </div>
   </div>
-			<div class="modal fade" id="broken-modal">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Flag Mission as Broken</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						X
-						</button>
-					</div>
-					<div class="modal-body">
-						<p>Please explain why you think this mission is broken:</p>
-						<p>Mission name: <?php echo "MISSION NAME" ?></p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save changes</button>
-					</div>
-				</div>
-			</div>
 </div>
-
-
 
 
 
@@ -251,24 +231,6 @@ $('.btn-unlock').click(function(){
 }
 	});
 
-});
-</script>
-
-<script type="text/javascript">
-$('.btn-broken').click(function(){
-    var id = $(this).data('map');
-		var filename = $(this).data('filename');
-    $.ajax({
-     url: 'broken.php',
-     type: "POST",
-     data: {id: id,
-		 				filename: filename
-					},
-		 success : function(data) {
-
-		location.reload();
-}
-});
 });
 </script>
 
