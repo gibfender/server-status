@@ -9,11 +9,13 @@ require_once( "query-servers.php"); ?>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link rel="shortcut icon" href="/res/images/favicon.ico">
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-colvis-1.2.4/cr-1.3.2/r-2.1.1/datatables.min.css"/>
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/b-1.2.4/b-colvis-1.2.4/cr-1.3.2/r-2.1.1/datatables.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="res/DataTables/datatables.min.css"/>
+	<link href="res/css/bootstrap.min.css" rel="stylesheet">
+
+	<script src="res/js/jquery-3.1.1.min.js"></script>
+	<script src="res/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="res/DataTables/datatables.min.js"></script>
+
 
 
 	<script>
