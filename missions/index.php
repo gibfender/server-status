@@ -1,6 +1,6 @@
 <?php
 require_once '../settings.php';
-require_once( "../monitor/query-servers.php"); ?>
+require_once( "query-servers.php"); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,39 +8,30 @@ require_once( "../monitor/query-servers.php"); ?>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link href="res/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="res/css/custom.css">
 	<link rel="shortcut icon" href="/res/images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs/dt-1.10.13/r-2.1.0/datatables.min.css"/>
-	<script type="text/javascript" src="res/js/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript" src="https://cdn.datatables.net/v/bs/dt-1.10.13/r-2.1.0/datatables.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="res/DataTables/datatables.min.css"/>
+	<link href="res/css/bootstrap.min.css" rel="stylesheet">
+
+	<script src="res/js/jquery-3.1.1.min.js"></script>
+	<script src="res/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="res/DataTables/datatables.min.js"></script>
+
+
 
 	<script>
 		$(document).ready(function() {
 
-			//use asynchronous AJAX call via JQuery to query the servers in the backend
-			//this way it's not blocking the loading of the page
 			var datastring = 'query-servers=true';
 			$.ajax({
 				type: "POST",
 				url: "query-servers.php",
 				data: datastring,
 				success: function(data) {
-					//show information in our div
 					$('.server-data').show().html(data);
-
 				}
 			});
 
 		});
-	</script>
-
-	<script>
-	$(document).ready(function(){
-	    $("#modal").click(function(){
-	        $("#myModal").modal();
-	    });
-	});
 	</script>
 
 	<script>
@@ -77,16 +68,29 @@ $(document).ready(function() {
     $results = $gq->process();
 
 			foreach ($results as $key => $server) {
-				if ($server['gq_mapname'] == '') {
-					$locked = 'False';
-				} else {
-					$locked = 'True';
+				if ($key == 'SRV1') {
+					if ($server['gq_mapname'] == '') {
+						$locked = 'False';
+					} else {
+						$locked = 'True';
+					};
+					if ($server['gq_numplayers'] > '0') {
+						$unlockable = 'True';
+					} else {
+						$unlockable = 'False';
+					}
 				}
-			}
+				}
+
 			 ?>
 
 
 			<h4>Server locked: <?php echo $locked ?> </h4>
+			<?php if ($fd_enabled == 'True') {
+				echo "<button name='btn-unlock' class='btn btn-success btn-unlock'";
+				if ($unlockable == 'True') {echo "disabled title='Cannot unlock as there are players connected.'";};
+				echo ">Unlock</button>";
+			} ?>
 		</div>
 		<div class="col-md-2">
 			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
@@ -131,9 +135,9 @@ $(document).ready(function() {
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
-											<button type="button" name="btn-broken" class="btn btn-warning btn-sm btn-broken" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
-											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-broken-modal" class="btn btn-warning btn-sm" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-id="<?php echo($row['id']); ?>" title="Report as broken"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-target="#update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete (WIP)" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -149,24 +153,9 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
+
 <script>
 $(document).ready(function() {
     $('#brokenmissions').DataTable( {
@@ -207,8 +196,8 @@ $(document).ready(function() {
 									  <td><?php echo $row['brokendes'] ?></td>
 									  <td>
 											<button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-ok"></span></button>
-											<button type="button" name="btn-update" class="btn btn-info btn-sm btn-update" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -226,20 +215,24 @@ $(document).ready(function() {
 </div>
 
 <script type="text/javascript">
-$('.btn-broken').click(function(){
-    var id = $(this).data('map');
-		var filename = $(this).data('filename');
-    $.ajax({
-     url: 'broken.php',
-     type: "POST",
-     data: {id: id,
-		 				filename: filename
-					},
-		 success : function(data) {
+$('.btn-unlock').click(function(){
 
-		location.reload();
+	var user = "<?php echo "$fd_user" ?>";
+	var pass = "<?php echo "$fd_pass" ?>";
+	var url = "<?php echo "$fd_URL" ?>";
+
+	$.ajax({
+		url: url+"/login",
+		type: "POST",
+		data: {
+			username: user,
+			password: pass
+		},
+		success : function(data) {
+	 location.reload();
 }
-});
+	});
+
 });
 </script>
 
