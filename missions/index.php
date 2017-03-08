@@ -43,6 +43,7 @@ require_once( "query-servers.php"); ?>
 </head>
 
 <body>
+
 <script>
 $(document).ready(function() {
     $('#livemissions').DataTable( {
@@ -113,6 +114,7 @@ $(document).ready(function() {
 					<th>Description</th>
 					<th>Last Updated</th>
 					<th>Manage</th>
+					<th>test</th>
 				</thead>
 				<tbody>
 					<?php
@@ -139,6 +141,7 @@ $(document).ready(function() {
 											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-target="#update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
 											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete (WIP)" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
+										<td><a href="#myModal" class="btn btn-default btn-small" id="custId" data-toggle="modal" data-id="'.$row['ID'].'">Edit</a></td>
 									</tr>
 							<?php }
 						}
@@ -154,8 +157,39 @@ $(document).ready(function() {
   </div>
 </div>
 
-
-
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Data</h4>
+            </div>
+            <div class="modal-body">
+                <div class="fetched-data">
+									<?php echo $row['name'] ?>
+								</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function(){
+	$('#myModal').on('show.bs.modal', function (e) {
+			var rowid = $(e.relatedTarget).data('id');
+			$.ajax({
+					type : 'post',
+					url : 'fetch_record.php', //Here you will fetch records
+					data :  'rowid='+ rowid, //Pass $id
+					success : function(data){
+					$('.fetched-data').html(data);//Show fetched data from database
+					}
+			});
+	 });
+});
+</script>
 <script>
 $(document).ready(function() {
     $('#brokenmissions').DataTable( {
