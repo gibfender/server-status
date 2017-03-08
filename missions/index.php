@@ -86,11 +86,6 @@ $(document).ready(function() {
 
 
 			<h4>Server locked: <?php echo $locked ?> </h4>
-			<?php if ($fd_enabled == 'True') {
-				echo "<button name='btn-unlock' class='btn btn-success btn-unlock'";
-				if ($unlockable == 'True') {echo "disabled title='Cannot unlock as there are players connected.'";};
-				echo ">Unlock</button>";
-			} ?>
 		</div>
 		<div class="col-md-2">
 			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
@@ -213,28 +208,6 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
-
-<script type="text/javascript">
-$('.btn-unlock').click(function(){
-
-	var user = "<?php echo "$fd_user" ?>";
-	var pass = "<?php echo "$fd_pass" ?>";
-	var url = "<?php echo "$fd_URL" ?>";
-
-	$.ajax({
-		url: url+"/login",
-		type: "POST",
-		data: {
-			username: user,
-			password: pass
-		},
-		success : function(data) {
-	 location.reload();
-}
-	});
-
-});
-</script>
 
 <script type="text/javascript">
 $('.btn-delete').click(function(){
