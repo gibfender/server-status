@@ -161,7 +161,9 @@ $(document).ready(function() {
             </div>
             <div class="modal-body">
                 <div class="fetched-data">
-									<?php echo $row['name'] ?>
+									<?php
+										
+									?>
 								</div>
             </div>
             <div class="modal-footer">
