@@ -162,7 +162,8 @@ $(document).ready(function() {
             <div class="modal-body">
                 <div class="fetched-data">
 									<?php
-										
+										echo $row['filename'];
+										echo "Hi!";
 									?>
 								</div>
             </div>

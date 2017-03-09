@@ -5,6 +5,7 @@ require_once '../settings.php';
 
 //Include database connection
 if($_POST['rowid']) {
+    $test = "Test";
     $id = $_POST['rowid']; //escape string
     try {
           $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
