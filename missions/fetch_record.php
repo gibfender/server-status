@@ -10,11 +10,11 @@ if($_POST['rowid']) {
     try {
           $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-          $stmt = $conn->prepare("SELECT filename, dateupdated, id, name, terrain, author, gamemode, minplayers, maxplayers, description, broken FROM missions WHERE id=20");
+          $stmt = $conn->prepare("SELECT filename, dateupdated, id, name, terrain, author, gamemode, minplayers, maxplayers, description, broken FROM missions WHERE id=$id");
           $stmt->execute();
           $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
         while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
-          echo $row['id'];
+          echo $id;
           echo $row['filename'];
           echo $row['dateupdated'];
           echo $row['name'];
