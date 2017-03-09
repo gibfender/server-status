@@ -136,7 +136,7 @@ $(document).ready(function() {
 											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-target="#update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
 											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete (WIP)" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
-										<td><a href="#myModal" class="btn btn-default btn-small" id="custId" data-toggle="modal" data-id="<?php echo $row['id']?>"><?php echo $row['id']?></a></td>
+										<td><a href="#myModal" class="btn btn-default btn-small" id="custId" data-toggle="modal" data-map="<?php echo($row['id']); ?>" data-id="<?php echo $row['id']?>"><?php echo $row['id']?></a></td>
 									</tr>
 							<?php }
 						}
@@ -176,13 +176,14 @@ $(document).ready(function() {
 <script>
 $(document).ready(function(){
 	$('#myModal').on('show.bs.modal', function (e) {
-			var rowid = $(e.relatedTarget).data('id');
+			var id = $(this).data('map');
 			$.ajax({
 					type : 'post',
 					url : 'fetch_record.php', //Here you will fetch records
-					data :  'rowid='+ rowid, //Pass $id
+					data :  'id='+ id, //Pass $id
 					success : function(data){
 					$('.fetched-data').html(data);//Show fetched data from database
+					console.log(id);
 					}
 			});
 	 });
