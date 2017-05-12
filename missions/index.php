@@ -70,6 +70,7 @@ $(document).ready(function() {
 
 			foreach ($results as $key => $server) {
 				if ($key == 'SRV1') {
+					$numplayers = $server['gq_numplayers'];
 					if ($server['gq_mapname'] == '') {
 						$locked = 'False';
 					} else {
@@ -77,12 +78,28 @@ $(document).ready(function() {
 					};
 					if ($server['gq_numplayers'] > '0') {
 						$unlockable = 'True';
+						try {
+									$missions = array();
+									$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
+									$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+									$stmt = $conn->prepare("SELECT `name` FROM `missions` WHERE (`minplayers`<$numplayers) AND (`maxplayers`>$numplayers) AND (`broken`='0')");
+									$stmt->execute();
+									$result = $stmt->fetchAll(PDO::FETCH_COLUMN);
+									$arr = $result;
+									$rand_key = array_rand($arr);
+									$rand_value = $arr[$rand_key];
+
+						}
+						catch (PDOException $e) {
+										echo "Error: " . $e->getMessage();
+						}
+
+						$conn = null;
 					} else {
 						$unlockable = 'False';
 					}
-				}
-				}
-
+			}
+			}
 			 ?>
 
 
@@ -92,6 +109,9 @@ $(document).ready(function() {
 			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
 		</div>
 	</div>
+	<?php if ($numplayers > 0) {
+		echo "<hr/><h2>Suggested mission: ".$rand_value."</h2><br/><p>Suggested missions are selected randomly from missions where the total number of players on the server is greater than the minimum and less that the maximum number of players specified in the mission metadata.</p>";
+	} ?>
 	<hr/>
 	<h2>Live Missions</h2>
 	<div class="row">
@@ -104,12 +124,12 @@ $(document).ready(function() {
 					<th>Map</th>
 					<th>Author</th>
 					<th>Game Mode</th>
-					<th>Min. Players</th>
-					<th>Max. Players</th>
+					<th>Min Players</th>
+					<th>Max Players</th>
 					<th>Description</th>
 					<th>Last Updated</th>
 					<th>Manage</th>
-					<th>test</th>
+					<!--<th>test</th>-->
 				</thead>
 				<tbody>
 					<?php
@@ -127,16 +147,16 @@ $(document).ready(function() {
 									  <td><?php echo $row['terrain'] ?></td>
 									  <td><?php echo $row['author'] ?></td>
 									  <td><?php echo $row['gamemode'] ?></td>
-									  <td><?php echo $row['minplayers'] ?></td>
-									  <td><?php echo $row['maxplayers'] ?></td>
+										<td><?php echo $row['minplayers'] ?></td>
+										<td><?php echo $row['maxplayers'] ?></td>
 									  <td><?php echo $row['description'] ?></td>
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
-											<button type="button" name="btn-broken-modal" class="btn btn-warning btn-sm" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-id="<?php echo($row['id']); ?>" title="Report as broken"><span class="glyphicon glyphicon-warning-sign"></span></button>
-											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> disabled data-toggle="modal" data-target="#update-modal" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete (WIP)" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-broken" class="btn btn-warning btn-sm btn-broken" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#update-modal" title="Upload new version" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
-										<td><a href="#myModal" class="btn btn-default btn-small" id="custId" data-toggle="modal" data-map="<?php echo($row['id']); ?>" data-id="<?php echo $row['id']?>"><?php echo $row['id']?></a></td>
+										<!--<td><a href="#myModal" class="btn btn-default btn-small" id="custId" data-toggle="modal" data-map="<?php echo($row['id']); ?>" data-id="<?php echo $row['id']?>"><?php echo $row['id']?></a></td>-->
 									</tr>
 							<?php }
 						}
@@ -211,7 +231,7 @@ $(document).ready(function() {
 						<th>Author</th>
 						<th>Failure Category</th>
 						<th>Failure Description</th>
-						<th>Report</th>
+						<th>Manage</th>
 				</thead>
 				<tbody>
 					<?php
@@ -229,8 +249,8 @@ $(document).ready(function() {
 									  <td><?php echo $row['brokendes'] ?></td>
 									  <td>
 											<button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-ok"></span></button>
-											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Upload new version (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Delete (WIP)" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Upload new version" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Delete" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
@@ -246,6 +266,24 @@ $(document).ready(function() {
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+$('.btn-broken').click(function(){
+    var id = $(this).data('map');
+		var filename = $(this).data('filename');
+    $.ajax({
+     url: 'broken.php',
+     type: "POST",
+     data: {id: id,
+		 				filename: filename
+					},
+		 success : function(data) {
+
+		location.reload();
+}
+});
+});
+</script>
 
 <script type="text/javascript">
 $('.btn-delete').click(function(){
