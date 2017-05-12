@@ -82,7 +82,7 @@ $(document).ready(function() {
 									$missions = array();
 									$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
 									$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-									$stmt = $conn->prepare("SELECT `name` FROM `missions` WHERE (`minplayers`<$numplayers) AND (`maxplayers`>$numplayers) AND (`broken`='0')");
+									$stmt = $conn->prepare("SELECT `name` FROM `missions` WHERE (`minplayers`<=$numplayers) AND (`maxplayers`>$numplayers) AND (`broken`='0')");
 									$stmt->execute();
 									$result = $stmt->fetchAll(PDO::FETCH_COLUMN);
 									$arr = $result;
