@@ -56,11 +56,13 @@
             <option>Chernarus</option>
             <option>Desert Island</option>
             <option>Desert</option>
+            <option>Dingor</option>
             <option>Everon</option>
             <option>Isla Abramia</option>
             <option>Kolgujev</option>
             <option>Malden</option>
             <option>Nogova</option>
+            <option>Lingor</option>
             <option>Porto</option>
             <option>Proving Grounds</option>
             <option>Rahmadi</option>
