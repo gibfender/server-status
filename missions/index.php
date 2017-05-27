@@ -153,8 +153,8 @@ $(document).ready(function() {
 										<td><?php echo $row['dateupdated'] ?></td>
 										<td>
 											<button type="button" name="btn-broken" class="btn btn-warning btn-sm btn-broken" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="" data-target="" title="Report as broken" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-warning-sign"></span></button>
-											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#update-modal" title="Upload new version" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" disabled data-toggle="modal" data-target="#update-modal" title="Upload new version" data-map="<?php echo($row['id']); ?>" data-name="<?php echo($row['name']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete <?php if ($locked == 'True') {echo "disabled";} ?> data-toggle="modal" data-target="#delete-modal" title="Delete" data-name="<?php echo($row['name']); ?>" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 										<!--<td><a href="#myModal" class="btn btn-default btn-small" id="custId" data-toggle="modal" data-map="<?php echo($row['id']); ?>" data-id="<?php echo $row['id']?>"><?php echo $row['id']?></a></td>-->
 									</tr>
@@ -249,8 +249,8 @@ $(document).ready(function() {
 									  <td><?php echo $row['brokendes'] ?></td>
 									  <td>
 											<button type="button" name="btn-fixed" class="btn btn-success btn-sm btn-fixed" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-ok"></span></button>
-											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Upload new version" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
-											<button type="button" name="btn-delete-modal" class="btn btn-danger btn-sm btn-delete-modal" <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Delete" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
+											<button type="button" name="btn-update-modal" class="btn btn-info btn-sm btn-update-modal" disabled data-toggle="modal" data-target="" title="Upload new version" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-upload"></span></button>
+											<button type="button" name="btn-delete" class="btn btn-danger btn-sm btn-delete <?php if ($locked == 'True') { echo "disabled";} ?> data-toggle="modal" data-target="" title="Delete" data-map="<?php echo($row['id']); ?>" data-filename="<?php echo($row['filename']); ?>"><span class="glyphicon glyphicon-trash"></span></button>
 										</td>
 									</tr>
 							<?php }
