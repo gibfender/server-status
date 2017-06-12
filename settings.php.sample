@@ -11,10 +11,11 @@ $username = "USERNAME";
 $password = "PASSWORD";
 $dbname = "DBNAME";
 
-//MPMissions Directory
+//Directories
 $missionsdir = "C:/dir/to/Arma/MPMissions/";
 $brokendir = "C:/dir/to/Broken/";
 $deleteddir = "C:/dir/to/Delete/";
+$RPTdir = "C:/dir/to/RPT/";
 
 //change this to reflect the servers that you want to query
 $servers = array(

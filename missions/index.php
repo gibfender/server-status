@@ -106,7 +106,7 @@ $(document).ready(function() {
 			<h4>Server locked: <?php echo $locked ?> </h4>
 		</div>
 		<div class="col-md-2">
-			<a class="btn btn-primary" href="addMission.php" role="button">Upload a mission</a>
+			<a class="btn btn-primary" href="addMission" role="button">Upload a mission</a>
 		</div>
 	</div>
 	<?php if ($numplayers > 0) {
