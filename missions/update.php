@@ -22,6 +22,7 @@ require '../settings.php';
         $sql = "UPDATE missions SET
                                     dateupdated = CURDATE(),
                                     name = ?,
+                                    datecreated = ?,
                                     version = ?,
                                     minplayers = ?,
                                     maxplayers = ?,
@@ -30,6 +31,6 @@ require '../settings.php';
                                     description = ?,
                                     gamemode = ?
                                     WHERE id = '$id'";
-        $pdo->prepare($sql)->execute([$missionname,$version,$minplayers,$maxplayers,$terrain,$author,$description,$gamemode]);
-        var_dump($missionname);
+        $pdo->prepare($sql)->execute([$missionname,$datecreated,$version,$minplayers,$maxplayers,$terrain,$author,$description,$gamemode]);
+        header('Location: /mission.php?id='.$id);
 ?>

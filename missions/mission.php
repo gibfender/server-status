@@ -194,6 +194,7 @@
     			<div class="form-group">
     				<label for="missionname" class="col-sm-2">Mission Name</label>
     				<div class="col-sm-4">
+              <input type="hidden" name="id" id="id" value="<?php echo($id); ?>" />
     					<input type="text" class="form-control" name="missionname" id="missionname" value="<?php echo(htmlspecialchars($name));?>" required>
     				</div>
     				<label for="author" class="col-sm-2">Author</label>
