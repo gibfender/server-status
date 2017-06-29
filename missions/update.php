@@ -30,6 +30,6 @@ require '../settings.php';
                                     description = ?,
                                     gamemode = ?
                                     WHERE id = '$id'";
-        $pdo->prepare($sql)->execute([$missionname,$vesion,$minplayers,$maxplayers,$terrain,$author,$description,$gamemode]);
+        $pdo->prepare($sql)->execute([$missionname,$version,$minplayers,$maxplayers,$terrain,$author,$description,$gamemode]);
         var_dump($missionname);
 ?>
