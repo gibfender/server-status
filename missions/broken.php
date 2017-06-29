@@ -2,6 +2,8 @@
 
 require '../settings.php';
 
+rename($missionsdir.$_POST['filename'], $brokendir.$_POST['filename']);
+
 if(isset($_POST['id'])) {
   $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -10,5 +12,5 @@ if(isset($_POST['id'])) {
   $conn = null;
 }
 
-rename($missionsdir.$_POST['filename'], $brokendir.$_POST['filename']);
+
 ?>
