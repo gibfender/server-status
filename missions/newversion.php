@@ -1,53 +1,54 @@
 <?php
-        require '../settings.php';
+include '../settings.php';
 
+        //turn on php error reporting
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        function updateversion() {
+          function updateversion() {
+            include '../settings.php';
+            $id = $_POST['id'];
+            $version = $_POST['version'];
+            $dsn = "mysql:host=$servername;dbname=$dbname;";
+            $opt = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
+              ];
+            $pdo = new PDO($dsn, $username, $password, $opt);
+            $sql = "UPDATE missions SET
+                                        dateupdated = CURDATE(),
+                                        version = ?
+                                        WHERE id = '$id'";
+            $stmt = $pdo->prepare($sql)->execute([$version]);
+            error_log($stmt);
+            $stmt = null;
 
-          $dsn = "mysql:host=$servername;dbname=$dbname;";
-          $opt = [
-              PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
-            ];
-          $pdo = new PDO($dsn, $username, $password, $opt);
-          $sql = "UPDATE missions SET
-                                      dateupdated = CURDATE(),
-                                      version = ?,
-                                      WHERE id = '$id'";
-          $stmt = $pdo->prepare($sql)->execute([$version]);
-          error_log($stmt);
-          $stmt = null;
+          };
 
-        };
+          function addreleasenotes() {
+            include '../settings.php';
+            $id = $_POST['id'];
+            $version = $_POST['version'];
+            $note = $_POST['note'];
 
-        function addreleasenotes() {
+            $dsn = "mysql:host=$servername;dbname=$dbname;";
+            $opt = [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
+              ];
+            $pdo = new PDO($dsn, $username, $password, $opt);
+            $sql = "INSERT INTO releasenotes(version,note,date,id)
+                    VALUES (?,?,CURDATE(),?)";
+            $stmt=$pdo->prepare($sql)->execute([$version,$note,$id]);
+            error_log($stmt);
+            $stmt=null;
+          };
 
-          $id = $_POST['id'];
-          $version = $_POST['version'];
-          $notes = $_POST['notes'];
-
-          $dsn = "mysql:host=$servername;dbname=$dbname;";
-          $opt = [
-              PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
-            ];
-          $pdo = new PDO($dsn, $username, $password, $opt);
-          $sql = "INSERT INTO releasenotes(version,notes,date,id)
-                  VALUES (?,?,CURDATE(),?)";
-          $stmt=$pdo->prepare($sql)->execute([$version,$notes,$id]);
-          error_log($stmt);
-          $stmt=null;
-        };
-
-
-
-            $file_name=   $_FILES['file']['name'];
-            $tmpName  =   $_FILES['file']['tmp_name'];
-            $error    =   $_FILES['file']['error'];
-            $size     =   $_FILES['file']['size'];
-            $ext      =   strtolower(pathinfo($name, PATHINFO_EXTENSION));
+            $name     = $_FILES['file']['name'];
+            $tmpName  = $_FILES['file']['tmp_name'];
+            $error    = $_FILES['file']['error'];
+            $size     = $_FILES['file']['size'];
+            $ext      = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 
             switch ($error) {
                 case UPLOAD_ERR_OK:
@@ -58,15 +59,15 @@
                         $response = 'Invalid file extension.';
                     }
                     //validate file size
-                    if ( $size/10240/10240 > 2 ) {
+                    if ( $size/1024/1024 > 2 ) {
                         $valid = false;
                         $response = 'File size is exceeding maximum allowed size.';
                     }
                     //upload file
                     if ($valid) {
-                      updateversion();
-                      addreleasenotes();
-                        move_uploaded_file($tmpName,$missionsdir.$file_name);
+                        updateversion();
+                        addreleasenotes();
+                        move_uploaded_file($tmpName,$missionsdir.$name);
                         header( 'Location: index.php' ) ;
                         exit;
                     }
@@ -98,6 +99,5 @@
             }
 
             echo $response;
-        }
-
+}
  ?>

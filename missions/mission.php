@@ -56,6 +56,7 @@
               $maxplayers = $row['maxplayers'];
               $description = $row['description'];
               $dateupdated = $row['dateupdated'];
+              $datecreate = $row['datecreated'];
 
 
               ?>
@@ -83,6 +84,7 @@
             <div class="col-md-4 pull-right">
                <div class="btn-group">
                   <a href="#" class="btn btn-success disabled"><span class="glyphicon glyphicon-thumbs-up"></span> I like this mission</a>
+                  <button class="btn"><?php echo "$likes"?></button>
                   <a href="#" class="btn btn-danger disabled"><span class="glyphicon glyphicon-thumbs-down"></span> Needs more work</a>
                </div>
             </div>
@@ -156,41 +158,34 @@
                        <h4 class="modal-title">Upload new version</h4>
                      </div>
                      <div class="modal-body">
-
-
-                       <form class="form-horizontal" action="newversion.php" method="post"  enctype="multipart/form-data" role="form">
-                                 <div class="form-group">
-                                   <label  class="col-sm-2 control-label"
-                                             for="file">Select a file to upload</label>
-                                   <div class="col-sm-10">
-                                       <input type="file" name="file" class="form-control">
-                                       <p class="help-block">Only PBO files are allowed with a maximum filesize of 20MB.</p>
-                                   </div>
-                                 </div>
-                                 <div class="form-group">
-                                   <label class="col-sm-2 control-label"
-                                         for="version" >Version</label>
-                                   <div class="col-sm-10">
-                                     <input type="hidden" name="id" id="id" value="<?php echo($id); ?>" />
-                                       <input type="text" class="form-control"
-                                           id="version" value="<?php echo $version ?>" required/>
-                                   </div>
-                                 </div>
-                                 <div class="form-group">
-                                   <label class="col-sm-2 control-label"
-                                         for="notes" >Release Notes</label>
-                                   <div class="col-sm-10">
-                                       <input type="textarea" rows="8" cols="50" class="form-control"
-                                           id="notes" placeholder="What changes did you make?" required/>
-                                   </div>
-                                 </div>
-                                 <div class="form-group">
-                                   <div class="col-sm-offset-2 col-sm-10">
-                                     <input type="submit" class="btn btn-success" name="submit" data-dismiss="modal" value="Upload new version"/>
-                                   </div>
-                                 </div>
-                               </form>
-
+                      <form class="form-horizontal" action="newversion.php" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                          <label  class="col-sm-2 control-label" for="file">Select a file to upload</label>
+                          <div class="col-sm-10">
+                              <input type="file" name="file" class="form-control">
+                              <p class="help-block">Only PBO files are allowed with a maximum filesize of 20MB.</p>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <input type="hidden" name="id" value="<?php echo($id); ?>" />
+                          <label class="col-sm-2 control-label" for="version" >Version</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="version" value="<?php echo $version ?>" required/>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label"
+                                for="note" >Release Notes</label>
+                          <div class="col-sm-10">
+                              <input type="textarea" rows="8" cols="50" name="note" placeholder="What changes did you make?" required/>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-offset-2 col-sm-10">
+                            <input type="submit" class="btn btn-success" value="Upload new version" />
+                          </div>
+                        </div>
+                      </form>
                      </div>
                      <div class="modal-footer">
 
@@ -297,7 +292,7 @@
           <div class="form-group"> <!-- Date input -->
             <label class="col-sm-2" for="datecreated">First Uploaded</label>
             <div class="col-sm-4">
-              <input class="form-control" id="date" name="datecreated" id="datecreated" placeholder="YYYY/MM/DD" type="text"/>
+              <input class="form-control" id="date" name="datecreated" id="datecreated" value="<?php echo(htmlspecialchars($datecreated))?>" type="text" required />
             </div>
             <label for="version" class="col-sm-2">Version</label>
             <div class="col-sm-4">
