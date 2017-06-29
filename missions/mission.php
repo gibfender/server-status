@@ -49,6 +49,7 @@
               $filename = $row['filename'];
               $name = $row['name'];
               $terrain = $row['terrain'];
+              $version = $row['version'];
               $author = $row['author'];
               $gamemode = $row['gamemode'];
               $minplayers = $row['minplayers'];
@@ -65,10 +66,10 @@
             </div>
             <div class="col-md-4 pull-right">
                  <a href="<?php if ($row['broken']=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
-                  <button type="button" class="btn btn-primary" name="btn-update"><span class="glyphicon glyphicon-upload"></span></button>
+                  <button type="button" class="btn btn-primary" name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
                   <button type="button" class="btn btn-primary" name="btn-update-meta" data-toggle="modal" data-target="#update-modal"><span class="glyphicon glyphicon-pencil"></span></button>
                   <?php if ($row['broken']=='0') {echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal'><span class='glyphicon glyphicon-exclamation-sign'></span></button>";} else {echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";};?>
-                  <button type="button" class="btn btn-danger btn-delete" name="btn-delete" data-id="<?php echo $row['id']; ?>" data-filename="<?php echo $row['filename']; ?>"><span class="glyphicon glyphicon-trash"></span></button>
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
             </div>
          </div>
          <div class="row">
@@ -144,29 +145,120 @@
          </div>
          <hr/>
                </div>
+               <!-- New Version Modal -->
+               <div id="newversion" class="modal fade" role="dialog">
+                 <div class="modal-dialog modal-lg">
+
+                   <!-- Modal content-->
+                   <div class="modal-content">
+                     <div class="modal-header">
+                       <button type="button" class="close" data-dismiss="modal">&times;</button>
+                       <h4 class="modal-title">Upload new version</h4>
+                     </div>
+                     <div class="modal-body">
+
+
+                       <form class="form-horizontal" action="newversion.php" method="post"  enctype="multipart/form-data" role="form">
+                                 <div class="form-group">
+                                   <label  class="col-sm-2 control-label"
+                                             for="file">Select a file to upload</label>
+                                   <div class="col-sm-10">
+                                       <input type="file" name="file" class="form-control">
+                                       <p class="help-block">Only PBO files are allowed with a maximum filesize of 20MB.</p>
+                                   </div>
+                                 </div>
+                                 <div class="form-group">
+                                   <label class="col-sm-2 control-label"
+                                         for="version" >Version</label>
+                                   <div class="col-sm-10">
+                                     <input type="hidden" name="id" id="id" value="<?php echo($id); ?>" />
+                                       <input type="text" class="form-control"
+                                           id="version" value="<?php echo $version ?>" required/>
+                                   </div>
+                                 </div>
+                                 <div class="form-group">
+                                   <label class="col-sm-2 control-label"
+                                         for="notes" >Release Notes</label>
+                                   <div class="col-sm-10">
+                                       <input type="textarea" rows="8" cols="50" class="form-control"
+                                           id="notes" placeholder="What changes did you make?" required/>
+                                   </div>
+                                 </div>
+                                 <div class="form-group">
+                                   <div class="col-sm-offset-2 col-sm-10">
+                                     <input type="submit" class="btn btn-success" name="submit" data-dismiss="modal" value="Upload new version"/>
+                                   </div>
+                                 </div>
+                               </form>
+
+                     </div>
+                     <div class="modal-footer">
+
+                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                     </div>
+                   </div>
+
+                 </div>
+               </div>
+
+               <?php }
+           }
+           catch (PDOException $e) {
+                   echo "Error: " . $e->getMessage();
+           }
+
+           $conn = null;
+         ?>
          <div class="container">
            <div class="row">
               <div class="col-lg-12">
-                 <h4>Release Notes</h4>
+                 <h3>Release Notes</h3>
               </div>
            </div>
-           <div class="row">
-              <div class="col-lg-12">
-                 <p>WIP</p>
-              </div>
+           <?php         $dsn = "mysql:host=$servername;dbname=$dbname;";
+                   $opt = [
+                       PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                       PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                      PDO::ATTR_EMULATE_PREPARES   => false
+                     ];
+                   $pdo = new PDO($dsn, $username, $password, $opt);
+                   $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY date desc")->fetchAll();
+                   if (empty($stmt)) {
+                     echo '<div class="container">
+                       <div class="row">
+                         <div class="col-md"><p>None yet!</p>
+                         </div>
+                       </div>
+                       </div>';
+                   } else {
+                   foreach ($stmt as $row)
+                    {
+                      echo '<div class="container">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <h4>Version</h4>
+                              <p>' . $row['version']. '</p>
+                            </div>
+                            <div class="col-md-6">
+                              <h4>Date</h4>
+                              <p>' . $row['date']. '</p>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <h4>Changelog</h4>
+                              <p>' . $row['note']. '</p>
+                            </div>
+                          </div>
+                        </div>
+                        <hr/>';
+                      }
+                    };
+                    $stmt=null;
+           ?>
            </div>
          </div>
 
-
-
-      <?php }
-  }
-  catch (PDOException $e) {
-          echo "Error: " . $e->getMessage();
-  }
-
-  $conn = null;
-?>
 <!-- Update Metadata Modal -->
 <div id="update-modal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -341,6 +433,27 @@
   </div>
 </div>
 
+<!-- Delete Modal -->
+<div id="delete-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Delete Mission</h4>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to remove this mission from the server and database?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-delete" name="btn-delete" data-id="<?php echo $id; ?>" data-filename="<?php echo $filename; ?>" data-dismiss="modal">Delete Mission</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script type="text/javascript">
    $('.btn-broken').click(function(){
@@ -371,7 +484,7 @@
              },
         success : function(data) {
 
-       location.reload();
+        location.href = "index.php";
    }
    });
    });
