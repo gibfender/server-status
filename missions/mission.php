@@ -35,6 +35,34 @@
       <title><?php echo $row['name'];?></title>
       <link href="res/css/bootstrap.min.css" rel="stylesheet">
       <script src="res/js/jquery-3.1.1.min.js"></script>
+      <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=<?php echo $tinyMCEAPI?>"></script>
+      <script>tinymce.init({
+        selector: 'textarea',
+        height: 400,
+        branding: false,
+        plugins: [
+          'advlist autolink lists link charmap print preview hr anchor pagebreak',
+          'searchreplace wordcount visualblocks visualchars code fullscreen',
+          'insertdatetime nonbreaking save table contextmenu directionality'
+        ],
+        toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link preview',
+        image_advtab: false
+       });
+       // Prevent bootstrap dialog from blocking focusin
+$(document).on('focusin', function(e) {
+    if ($(e.target).closest(".mce-window").length) {
+		e.stopImmediatePropagation();
+	}
+});
+
+$('#open').click(function() {
+	$("#dialog").dialog({
+		width: 800,
+		modal: true
+	});
+});
+</script>
+
       <script src="res/js/bootstrap.min.js"></script>
       <!-- Bootstrap Date-Picker Plugin -->
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -180,7 +208,7 @@
                </div>
                <div class="modal-body">
                   <div class="well">
-                     <form class="form-horizontal" action="newversion.php" method="post" enctype="multipart/form-data">
+                     <form class="form-horizontal" action="newversion.php" method="post" enctype="multipart/form-data" novalidate>
                         <div class="form-group">
                            <label for="file" class="control-label">Upload PBO File</label>
                            <input type="file" name="file" class="form-control-file aria-describedby="file-help"" required>
@@ -192,7 +220,7 @@
                         </div>
                         <div class="form-group">
                            <label for="note" class="control-label">Note</label>
-                           <textarea class="form-control" name="note" rows="8" cols="80" placeholder="What changes did you make?" required></textarea>
+                           <textarea id="note" name="note" rows="8" cols="80" required><h4>Added</h4><ul><li>None</li></ul><h4>Changed</h4><ul><li>None</li></ul><h4>Removed</h4><ul><li>None</li></ul></textarea>
                         </div>
                         <div class="form-group">
                            <input type="hidden" name="id" value="<?php echo($id); ?>">
@@ -347,7 +375,7 @@
                </div>
                <div class="modal-body">
                   <div class="well">
-                     <form class="form-horizontal" id="mission_meta" action="update.php" method="post"  enctype="multipart/form-data" role="form">
+                     <form class="form-horizontal" id="mission_meta" action="update.php" method="post"  enctype="multipart/form-data" role="form" novalidate>
                         <div class="form-group">
                            <label for="missionname" class="col-sm-2">Mission Name</label>
                            <div class="col-sm-4">
@@ -367,23 +395,23 @@
                            </div>
                            <label for="version" class="col-sm-2">Version</label>
                            <div class="col-sm-4">
-                              <input type="text" class="form-control" name="version" id="version" value="<?php echo $version ?>">
+                              <input type="text" class="form-control" name="version" id="version" value="<?php echo $version ?>" required>
                            </div>
                         </div>
                         <div class="form-group">
                            <label for="minplayers" class="col-sm-2">Minimum Players</label>
                            <div class="col-sm-4">
-                              <input type="text" class="form-control" name="minplayers" id="minplayers" value="<?php echo $minplayers ?>">
+                              <input type="text" class="form-control" name="minplayers" id="minplayers" value="<?php echo $minplayers ?>" required>
                            </div>
                            <label for="maxplayers" class="col-sm-2">Maximum Players</label>
                            <div class="col-sm-4">
-                              <input type="text" class="form-control" name="maxplayers" id="maxplayers" value="<?php echo $maxplayers ?>">
+                              <input type="text" class="form-control" name="maxplayers" id="maxplayers" value="<?php echo $maxplayers ?>" required>
                            </div>
                         </div>
                         <div class="form-group">
                            <label for="terrain" class="col-sm-2">Map</label>
                            <div class="col-sm-4">
-                              <select class="form-control" name="terrain" id="terrain">
+                              <select class="form-control" name="terrain" id="terrain" required>
                                  <option selected="selected"><?php echo $terrain; ?></option>
                                  <
                                  <option> Altis</option>
@@ -419,7 +447,7 @@
                            </div>
                            <label for="gamemode" class="col-sm-2">Game Mode</label>
                            <div class="col-sm-4">
-                              <select class="form-control" name="gamemode" is="gamemode">
+                              <select class="form-control" name="gamemode" is="gamemode" required>
                                  <option selected="selected"><?php echo $gamemode ?></option>
                                  <option>Undefined</option>
                                  <option>Deathmatch</option>
@@ -442,7 +470,7 @@
                         <div class="form-group">
                            <label for="description" class="col-sm-2">Description</label>
                            <div class="col-sm-10">
-                              <textarea rows="8" class="form-control" name="description" id="description" value="<?php echo $description ?>"></textarea>
+                              <textarea rows="8" class="form-control" name="description" id="description" required><?php echo $description ?></textarea>
                            </div>
                         </div>
                         <button type="submit" class="btn btn-warning" name="submit" id="submit">Save Changes</button>
@@ -508,7 +536,7 @@
                </div>
                <div class="modal-body">
                   <div class="well">
-                     <form class="form-horizontal" action="broken.php" method="post"  enctype="multipart/form-data" role="form">
+                     <form class="form-horizontal" action="broken.php" method="post"  enctype="multipart/form-data" role="form" novalidate>
                         <div class="form-group">
                            <label for="brokentype" class="col-sm-2">Broken Category</label>
                            <div class="col-sm-8">
@@ -566,11 +594,6 @@
             </div>
          </div>
       </div>
-
-
-
-
-
 
 
    </body>

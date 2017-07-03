@@ -1,16 +1,24 @@
 <?php
 include '../settings.php';
 
+
+
+
         //turn on php error reporting
         error_reporting(E_ALL);
         ini_set('display_errors', 1);
+
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
           function updateversion() {
             include '../settings.php';
-            $id = $_POST['id'];
-            $version = $_POST['version'];
+            require_once 'res/library/HTMLPurifier.auto.php';
+            $config = HTMLPurifier_Config::createDefault();
+            $purifier = new HTMLPurifier($config);
+            $id = $purifier->purify($_POST['id']);
+            $purifier = new HTMLPurifier($config);
+            $version = $purifier->purify($_POST['version']);
             $dsn = "mysql:host=$servername;dbname=$dbname;";
             $opt = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
@@ -28,8 +36,15 @@ include '../settings.php';
 
           function addreleasenotes() {
             include '../settings.php';
-            $id = $_POST['id'];
-            $version = $_POST['version'];
+            require_once 'res/library/HTMLPurifier.auto.php';
+            $config = HTMLPurifier_Config::createDefault();
+            $purifier = new HTMLPurifier($config);
+            $id = $purifier->purify($_POST['id']);
+            $purifier = new HTMLPurifier($config);
+            $version = $purifier->purify($_POST['version']);
+            $config = HTMLPurifier_Config::createDefault();
+            $config->set('HTML.Allowed', 'p[align|style],strong,a[href],em,table[class|width|cellpadding],td,tr,h3,h4,h5,hr,br,u,ul,ol,li');
+            $purifier = new HTMLPurifier($config);
             $note = $_POST['note'];
 
             $dsn = "mysql:host=$servername;dbname=$dbname;";
@@ -67,8 +82,12 @@ include '../settings.php';
                     if ($valid) {
                         updateversion();
                         addreleasenotes();
-                        move_uploaded_file($tmpName,$missionsdir.$name);
-                        header( 'Location: index.php' ) ;
+                        if (file_exists($missionsdir.$name)) {
+                          move_uploaded_file($tmpName,$missionsdir.$name);
+                        } else {
+                          move_uploaded_file($tmpName,$brokendir.$name);
+                        }
+                        header('Location: /mission.php?id='.$_POST['id']);
                         exit;
                     }
                     break;

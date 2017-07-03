@@ -1,13 +1,17 @@
 <?php
 
 require '../settings.php';
+require_once 'res/library/HTMLPurifier.auto.php';
+$config = HTMLPurifier_Config::createDefault();
+$purifier = new HTMLPurifier($config);
+
 
 rename($missionsdir.$_POST['filename'], $brokendir.$_POST['filename']);
 
-        $id = $_POST['id'];
-        $filename = $_POST['filename'];
-        $brokentype = $_POST['brokentype'];
-        $brokendes = $_POST['brokendes'];
+        $id = $purifier->purify($_POST['id']);
+        $filename = $purifier->purify($_POST['filename']);
+        $brokentype = $purifier->purify($_POST['brokentype']);
+        $brokendes = $purifier->purify($_POST['brokendes']);
 
 
         $dsn = "mysql:host=$servername;dbname=$dbname;";
