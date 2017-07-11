@@ -74,10 +74,10 @@ include '../settings.php';
                         $response = 'Invalid file extension.';
                     }
                     //validate file size
-                    if ( $size/1024/1024 > 2 ) {
+                    /*if ( $size/1024/1024 > 20 ) {
                         $valid = false;
                         $response = 'File size is exceeding maximum allowed size.';
-                    }
+                    }*/
                     //upload file
                     if ($valid) {
                         updateversion();

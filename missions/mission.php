@@ -423,6 +423,7 @@ $('#open').click(function() {
                                  <option>Dingor</option>
                                  <option>Everon</option>
                                  <option>Isla Abramia</option>
+                                 <option>Kerama Islands</option>
                                  <option>Kolgujev</option>
                                  <option>Malden</option>
                                  <option>Nogova</option>

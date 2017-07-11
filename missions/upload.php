@@ -1,6 +1,5 @@
 <?php
 require '../settings.php';
-require_once 'res/library/HTMLPurifier.auto.php';
 /*TODO When a new mission is uploaded, get php to generate a 4 character alphanumeric code. It can behave like a "password" for that file.(edited)
 And if they want to overwrite it they just enter the code. */
 
@@ -24,15 +23,13 @@ if ($conn->connect_error) {
     $file_error = $file['error'];
 
     //metadata Properties
-    $config = HTMLPurifier_Config::createDefault();
-    $purifier = new HTMLPurifier($config);
-    $missionname = $purifier->purify($_POST['missionname']);
-        $minplayers = $purifier->purify($_POST['minplayers']);
-        $maxplayers = $purifier->purify($_POST['maxplayers']);
-        $terrain = $purifier->purify($_POST['terrain']);
-        $author = $purifier->purify($_POST['author']);
-        $description = $purifier->purify($_POST['description']);
-        $gamemode = $purifier->purify($_POST['gamemode']);
+    $missionname = $_POST['missionname'];
+        $minplayers = $_POST['minplayers'];
+        $maxplayers = $_POST['maxplayers'];
+        $terrain = $_POST['terrain'];
+        $author = $_POST['author'];
+        $description = $_POST['description'];
+        $gamemode = $_POST['gamemode'];
 
     //Work out the file extension
     $file_ext = explode('.', $file_name);
