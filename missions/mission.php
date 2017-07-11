@@ -1,6 +1,29 @@
 <?php
 require_once '../settings.php';
 require_once 'query-servers.php';
+
+// Call the class, and add your servers.
+$gq = \GameQ\GameQ::factory();
+$gq->addServers($servers);
+// You can optionally specify some settings
+$gq->setOption('timeout', 3); //in seconds
+// Send requests, and parse the data
+$results = $gq->process();
+foreach ($results as $key => $server) {
+	if ($key == 'SRV1') {
+		$numplayers = $server['gq_numplayers'];
+		if (($server['gq_mapname'] == '') or ($numplayers > '0')) {
+			$locked = 'False';
+		} else {
+			$locked = 'True';
+		};
+		if ($server['gq_numplayers'] > '0') {
+			$unlockable = 'True';
+		} else {
+			$unlockable = 'False';
+		}
+}
+}
    $id = $_GET['id'];
      try {
            $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
@@ -100,11 +123,14 @@ $('#open').click(function() {
                   <h1><?php echo $name?></h1>
                </div>
                <div class="col-md-4 pull-right">
+                 <?php $locked = "true" ?>
                   <a href="<?php if ($broken=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
-                  <button type="button" class="btn btn-primary" name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
+                  <button type="button" class="btn btn-primary" <?php if($locked == 'true'){echo 'disabled';} ?> name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
                   <button type="button" class="btn btn-primary" name="btn-update-meta" data-toggle="modal" data-target="#update-modal"><span class="glyphicon glyphicon-pencil"></span></button>
-                  <?php if ($broken =='0') {echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal'><span class='glyphicon glyphicon-exclamation-sign'></span></button>";} else {echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";};?>
-                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
+                  <?php if ($broken == '0') {echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal' ".(($locked=="true") ? "disabled" : "")."><span class='glyphicon glyphicon-exclamation-sign'></span></button>";} else {echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";};?>
+                  <button type="button" class="btn btn-danger"  <?php if($locked == 'true'){echo 'disabled';} ?> data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
+                  <br/>
+                  <?php if($locked=="true"){echo"<small class='text-muted'>As the server is currently active, some functionality has been disabled.</small>";} ?>
                </div>
             </div>
             <div class="row">
