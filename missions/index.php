@@ -266,13 +266,6 @@ foreach ($results as $key => $server) {
 						}
 						$conn = null;
 				?>
-<<<<<<< 8dc669a5f2c99f9c35f706df89a051c9a72dc600
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-=======
 			</tbody>
 			</table>
     </div>
@@ -317,8 +310,7 @@ $('.btn-delete').click(function(){
 }
 });
 });
-</script> 
->>>>>>> include firedaemon settings
+</script>
 
                 <div class="col-md-1"></div>
             </div>
