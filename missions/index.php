@@ -210,7 +210,7 @@ foreach ($results as $key => $server) {
                                 </tbody>
                             </table>
                         </div>
-                        <div id="brokenmissionstab" class="tab-pane fade in active" role="tabpanel">
+                        <div id="brokenmissionstab" class="tab-pane fade in" role="tabpanel">
                             <table id='broken' class="table table-striped table-bordered" cellspacing="0" width="100%">
                                 <thead>
                                     <th>Mission Name</th>
