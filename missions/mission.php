@@ -125,12 +125,12 @@ $('#open').click(function() {
                <div class="col-md-4 pull-right">
                  <?php $locked = "true" ?>
                   <a href="<?php if ($broken=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
-                  <button type="button" class="btn btn-primary" <?php if($locked == 'true'){echo 'disabled';} ?> name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
+                  <button type="button" class="btn btn-primary" <?php if($locked == 'true' && $broken == '0'){echo 'disabled';} ?> name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
                   <button type="button" class="btn btn-primary" name="btn-update-meta" data-toggle="modal" data-target="#update-modal"><span class="glyphicon glyphicon-pencil"></span></button>
                   <?php if ($broken == '0') {echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal' ".(($locked=="true") ? "disabled" : "")."><span class='glyphicon glyphicon-exclamation-sign'></span></button>";} else {echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";};?>
-                  <button type="button" class="btn btn-danger"  <?php if($locked == 'true'){echo 'disabled';} ?> data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
+                  <button type="button" class="btn btn-danger"  <?php if($locked == 'true' && $broken == '0'){echo 'disabled';} ?> data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
                   <br/>
-                  <?php if($locked=="true"){echo"<small class='text-muted'>As the server is currently active, some functionality has been disabled.</small>";} ?>
+                  <?php if($locked=="true" && $broken == '0'){echo"<small class='text-muted'>As the server is currently active, some functionality has been disabled.</small>";} ?>
                </div>
             </div>
             <div class="row">
