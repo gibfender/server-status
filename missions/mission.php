@@ -123,7 +123,6 @@ $('#open').click(function() {
                   <h1><?php echo $name?></h1>
                </div>
                <div class="col-md-4 pull-right">
-                 <?php $locked = "true" ?>
                   <a href="<?php if ($broken=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
                   <button type="button" class="btn btn-primary" <?php if($locked == 'true' && $broken == '0'){echo 'disabled';} ?> name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
                   <button type="button" class="btn btn-primary" name="btn-update-meta" data-toggle="modal" data-target="#update-modal"><span class="glyphicon glyphicon-pencil"></span></button>
