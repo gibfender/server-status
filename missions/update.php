@@ -4,7 +4,7 @@ require '../settings.php';
 
         $id = $_POST['id'];
         $missionname = $_POST['missionname'];
-        $datecreated = date("Y-m-d", strtotime($_POST['datecreated']));
+        $datecreated = date("d-m-Y", strtotime($_POST['datecreated']));
         $version = $_POST['version'];
         $minplayers = $_POST['minplayers'];
         $maxplayers = $_POST['maxplayers'];
@@ -22,7 +22,7 @@ require '../settings.php';
         $sql = "UPDATE missions SET
                                     dateupdated = CURDATE(),
                                     name = ?,
-                                    datecreated = ?,
+                                    datecreated = STR_TO_DATE(?,'%d-%m-%Y'),
                                     version = ?,
                                     minplayers = ?,
                                     maxplayers = ?,

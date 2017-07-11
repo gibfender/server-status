@@ -17,8 +17,8 @@
            $minplayers = $row['minplayers'];
            $maxplayers = $row['maxplayers'];
            $description = $row['description'];
-           $dateupdated = $row['dateupdated'];
-           $datecreated = $row['datecreated'];
+           $dateupdated = new DateTime($row['dateupdated']);
+           $datecreated = new DateTime($row['datecreated']);
            $brokentype = $row['brokentype'];
            $brokendes = $row['brokendes'];
            $broken = $row['broken'];
@@ -32,7 +32,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <link rel="shortcut icon" href="/res/images/favicon.ico">
-      <title><?php echo $row['name'];?></title>
+      <title><?php echo $name;?></title>
       <link href="res/css/bootstrap.min.css" rel="stylesheet">
       <script src="res/js/jquery-3.1.1.min.js"></script>
       <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=<?php echo $tinyMCEAPI?>"></script>
@@ -94,30 +94,30 @@ $('#open').click(function() {
          <div class="well">
             <div class="row">
                <div class="col-md-8">
-                  <h1><?php echo $row['name']?></h1>
+                  <h1><?php echo $name?></h1>
                </div>
                <div class="col-md-4 pull-right">
-                  <a href="<?php if ($row['broken']=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
+                  <a href="<?php if ($broken=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
                   <button type="button" class="btn btn-primary" name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
                   <button type="button" class="btn btn-primary" name="btn-update-meta" data-toggle="modal" data-target="#update-modal"><span class="glyphicon glyphicon-pencil"></span></button>
-                  <?php if ($row['broken']=='0') {echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal'><span class='glyphicon glyphicon-exclamation-sign'></span></button>";} else {echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";};?>
+                  <?php if ($broken =='0') {echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal'><span class='glyphicon glyphicon-exclamation-sign'></span></button>";} else {echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";};?>
                   <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
                </div>
             </div>
             <div class="row">
                <div class="col-md-6">
-                  <h4>Version: <?php if (empty($row['version'])) {
+                  <h4>Version: <?php if (empty($version)) {
                      echo "N/A";
                      } else {
-                     echo $row['version'];
+                     echo $version;
                      }?></h4>
                </div>
-               <div class="col-md-4 pull-right">
+               <!--<div class="col-md-4 pull-right">
                   <div class="btn-group">
                      <a href="#" class="btn btn-success disabled"><span class="glyphicon glyphicon-thumbs-up"></span> I like this mission</a>
                      <a href="#" class="btn btn-danger disabled"><span class="glyphicon glyphicon-thumbs-down"></span> Needs more work</a>
                   </div>
-               </div>
+               </div>-->
             </div>
          </div>
       </div>
@@ -139,41 +139,42 @@ $('#open').click(function() {
          <div class="well">
             <div class="row">
                <div class="col-md-4">
-                  <h4>Author: <?php echo $row['author']?></h4>
+                  <h4>Author: <?php echo $author ?></h4>
                </div>
                <div class="col-md-4">
-                  <h4>Game Mode: <?php echo $row['gamemode']?></h4>
+                  <h4>Game Mode: <?php echo $gamemode ?></h4>
                </div>
                <div class="col-md-4">
-                  <h4>Map: <?php echo $row['terrain']?></h4>
-               </div>
-            </div>
-            <div class="row">
-               <div class="col-md-4">
-                  <h4>Min Players: <?php echo $row['minplayers']?></h4>
-               </div>
-               <div class="col-md-4">
-                  <h4>Max Players: <?php echo $row['maxplayers']?></h4>
-               </div>
-               <div class="col-md-4">
+                  <h4>Map: <?php echo $terrain ?></h4>
                </div>
             </div>
             <div class="row">
                <div class="col-md-4">
-                  <h4>First Uploaded: <?php if (empty($row['datecreated'])) {
+                  <h4>Min Players: <?php echo $minplayers ?></h4>
+               </div>
+               <div class="col-md-4">
+                  <h4>Max Players: <?php echo $maxplayers ?></h4>
+               </div>
+               <div class="col-md-4">
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-md-4">
+                  <h4>First Uploaded: <?php if (empty($datecreated)) {
                      echo "N/A";
                      } else {
-                     echo $row['datecreated'];
+
+                     echo date_format($datecreated, 'd/m/Y');
                      }
                      ?></h4>
                </div>
                <div class="col-md-4">
-                  <h4>Last Updated: <?php echo $row['dateupdated']?></h4>
+                  <h4>Last Updated: <?php echo date_format($dateupdated, 'd/m/Y')?></h4>
                </div>
                <div class="col-md-4">
                </div>
             </div>
-            <div class="row">
+            <!--<div class="row">
                <div class="col-md-4">
                   <h4>Times Played: <?php if (empty($row['playcount'])) {
                      echo "N/A";
@@ -183,7 +184,7 @@ $('#open').click(function() {
                </div>
                <div class="col-md-4">
                </div>
-            </div>
+            </div>-->
          </div>
       </div>
       <div class="container">
@@ -192,7 +193,7 @@ $('#open').click(function() {
                <div class="col-lg-12">
                   <h3>Description</h3>
                   <br/>
-                  <p><?php echo $row['description']?></p>
+                  <p><?php echo htmlspecialchars_decode($description) ?></p>
                </div>
             </div>
          </div>
@@ -359,7 +360,7 @@ $('#open').click(function() {
                  var date_input=$('input[name="datecreated"]'); //our date input has the name "date"
                  var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                  var options={
-                   format: 'yyyy-mm-dd',
+                   format: 'dd-mm-yyyy',
                    container: container,
                    todayHighlight: true,
                    autoclose: true,
@@ -391,7 +392,7 @@ $('#open').click(function() {
                            <!-- Date input -->
                            <label class="col-sm-2" for="datecreated">First Uploaded</label>
                            <div class="col-sm-4">
-                              <input class="form-control" id="date" name="datecreated" id="datecreated" value="<?php echo(htmlspecialchars($datecreated))?>" type="text" required />
+                              <input class="form-control" id="date" name="datecreated" id="datecreated" value="<?php echo date_format($datecreated, 'd/m/Y') ?>" type="text" required />
                            </div>
                            <label for="version" class="col-sm-2">Version</label>
                            <div class="col-sm-4">
