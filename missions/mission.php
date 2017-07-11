@@ -126,7 +126,8 @@ $('#open').click(function() {
           <div class='well'>
             <div class='row'>
               <div class='col-md-8'>
-                <h3>This mission is broken due to: $brokentype </h3>
+                <h4>This mission is broken due to:</h4>
+                <p>$brokentype</p>
                 <br/>
                 <h4>Description:</h4>
                 $brokendes
@@ -137,6 +138,11 @@ $('#open').click(function() {
     } ?>
       <div class="container">
          <div class="well">
+           <div class="row">
+             <div class="col-md-8">
+               <h2>Metadata</h2>
+             </div>
+           </div>
             <div class="row">
                <div class="col-md-4">
                   <h4>Author: <?php echo $author ?></h4>
@@ -191,7 +197,7 @@ $('#open').click(function() {
          <div class="well">
             <div class="row">
                <div class="col-lg-12">
-                  <h3>Description</h3>
+                  <h2>Description</h2>
                   <br/>
                   <p><?php echo htmlspecialchars_decode($description) ?></p>
                </div>
@@ -248,7 +254,7 @@ $('#open').click(function() {
          <div class="well">
             <div class="row">
                <div class="col-lg-12">
-                  <h3>Release Notes</h3>
+                  <h2>Release Notes</h2>
                </div>
             </div>
             <?php         $dsn = "mysql:host=$servername;dbname=$dbname;";
@@ -270,6 +276,7 @@ $('#open').click(function() {
                foreach ($stmt as $row)
                 {
                   echo '<div class="container">
+                  <div class="well">
                       <div class="row">
                         <div class="col-md-6">
                           <h4>Version</h4>
@@ -282,9 +289,12 @@ $('#open').click(function() {
                       </div>
                       <div class="row">
                         <div class="col-md-12">
-                          <h4>Changelog</h4>
+                          <h3>Changelog</h3>
+                          <div class="well">
                           <p>' . $row['note']. '</p>
+                          </div>
                         </div>
+                      </div>
                       </div>
                     </div>
                     <hr/>';
@@ -298,10 +308,10 @@ $('#open').click(function() {
 <div class="container">
   <div class="well">
     <div class="row">
-      <div class="col-lg-8">
-         <h3>Comments</h3>
+      <div class="col-md-8">
+         <h2>Comments</h2>
       </div>
-      <div class="col-lg-4">
+      <div class="col-md-4">
         <button type="button" class="btn btn-primary-outline" name="addcomment" data-toggle="modal" data-target="#commentModal">Add Comment</button>
       </div>
     </div>
@@ -323,10 +333,10 @@ $('#open').click(function() {
        } else {
        foreach ($stmt as $row)
         {
-          echo '<div class="container">
+          echo '<div class="container-fluid">
               <div class="well">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                   <h4>Version</h4>
                   <p>' . $row['version']. '</p>
                 </div>
@@ -350,6 +360,42 @@ $('#open').click(function() {
         $stmt=null;
        ?>
   </div>
+</div>
+
+
+<!-- AddComment Modal -->
+<div id="commentModal" class="modal fade" role="dialog">
+   <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add Comment</h4>
+         </div>
+         <div class="modal-body">
+           <h5>For Version: <?php echo $version ?></h5>
+           <div class="well">
+           <form class="form-horizontal" id="addComment" action="addComment.php" method="post"  enctype="multipart/form-data" role="form" novalidate>
+             <div class="form-group">
+               <input type="hidden" name="id" id="id" value="<?php echo($id); ?>" />
+               <input type="hidden" name="version" id="version" value="<?php echo($version); ?>" />
+               <label for="commenter">Your Name:</label>
+               <input type="text" class="form-control" name="commenter" id="commenter" placeholder="Your name">
+             </div>
+             <div class="form-group">
+               <label for="comment">Comment:</label>
+               <textarea rows="8" class="form-control" name="comment" id="comment" required></textarea>
+               <p class="help-block">Please be as helpful and descriptive as possible.</p>
+             </div>
+             <input type="submit" class="btn btn-warning" value="Submit Comment" />
+           </form>
+         </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
 </div>
 
       <!-- Update Metadata Modal -->
