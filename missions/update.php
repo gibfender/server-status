@@ -20,7 +20,6 @@ require '../settings.php';
           ];
         $pdo = new PDO($dsn, $username, $password, $opt);
         $sql = "UPDATE missions SET
-                                    dateupdated = CURDATE(),
                                     name = ?,
                                     datecreated = STR_TO_DATE(?,'%d-%m-%Y'),
                                     version = ?,
