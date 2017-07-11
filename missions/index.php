@@ -310,7 +310,7 @@ $('.btn-delete').click(function(){
 }
 });
 });
-</script> 
+</script>
 
                 <div class="col-md-1"></div>
             </div>
