@@ -266,11 +266,59 @@ foreach ($results as $key => $server) {
 						}
 						$conn = null;
 				?>
+<<<<<<< 8dc669a5f2c99f9c35f706df89a051c9a72dc600
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+=======
+			</tbody>
+			</table>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$('.btn-unlock').click(function(){
+
+	var user = "<?php echo "$fd_user" ?>";
+	var pass = "<?php echo "$fd_pass" ?>";
+	var url = "<?php echo "$fd_URL" ?>";
+
+	$.ajax({
+		url: url+"/login",
+		type: "POST",
+		data: {
+			username: user,
+			password: pass
+		},
+		success : function(data) {
+	 location.reload();
+}
+	});
+
+});
+</script>
+
+<script type="text/javascript">
+$('.btn-delete').click(function(){
+    var id = $(this).data('map');
+		var filename = $(this).data('filename');
+    $.ajax({
+     url: 'delete.php',
+     type: "POST",
+     data: {id: id,
+		 				filename: filename
+					},
+		 success : function(data) {
+
+		location.reload();
+}
+});
+});
+</script> 
+>>>>>>> include firedaemon settings
 
                 <div class="col-md-1"></div>
             </div>
