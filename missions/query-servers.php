@@ -3,34 +3,35 @@ require_once("../settings.php");
 require_once("res/gameq/src/GameQ/Autoloader.php");
 
 
-function secondsToString($seconds) {
-	$hours = floor($seconds / 3600);
-	$mins = floor($seconds / 60 % 60);
-	$secs = floor($seconds % 60);
+function secondsToString($seconds)
+{
+    $hours = floor($seconds / 3600);
+    $mins = floor($seconds / 60 % 60);
+    $secs = floor($seconds % 60);
 
-	return $hours.":".$mins.":".$secs;
+    return $hours.":".$mins.":".$secs;
 }?>
 
 
-<?php if (isset($_POST['query-servers']) && $_POST['query-servers'] == true){
+<?php if (isset($_POST['query-servers']) && $_POST['query-servers'] == true) {
 
-	// Call the class, and add your servers.
-	$gq = \GameQ\GameQ::factory();
-	$gq->addServers($servers);
+    // Call the class, and add your servers.
+    $gq = \GameQ\GameQ::factory();
+    $gq->addServers($servers);
 
-	// You can optionally specify some settings
-	$gq->setOption('timeout', 3); //in seconds
+    // You can optionally specify some settings
+    $gq->setOption('timeout', 3); //in seconds
 
-	// Send requests, and parse the data
-	$results = $gq->process();
+    // Send requests, and parse the data
+    $results = $gq->process(); ?>
 
-?>
-
-	<?php foreach ($results as $key => $server)	{ if ($server['gq_online'])	{ ?>
+	<?php foreach ($results as $key => $server) {
+        if ($server['gq_online']) {
+            ?>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6">
-					Server name: <?php echo $server['gq_hostname'];?>
+					Server name: <?php echo $server['gq_hostname']; ?>
 				</div>
 				<div class="col-md-6">
 					<?php echo "Mission: " . $server['game_descr']; ?>
@@ -56,18 +57,18 @@ function secondsToString($seconds) {
 				        	</div>
 				          <div class='modal-body'>
 										<?php if (isset($server['mods'])) {
-											$mods = "";
-											foreach ($server['mods'] as $mod) {
-												if ($mods == "") {
-													$mods = $mod['name'];
-												} else {
-													$mods = $mods . ",<br> " . $mod['name'];
-												}
-											}
-											echo "<div class='hide-mods'>" . $mods  . "</div>\n";
-										} else {
-											echo "<div class='hide-mods'>No Mods</div>\n";
-										} ?>
+                $mods = "";
+                foreach ($server['mods'] as $mod) {
+                    if ($mods == "") {
+                        $mods = $mod['name'];
+                    } else {
+                        $mods = $mods . ",<br> " . $mod['name'];
+                    }
+                }
+                echo "<div class='hide-mods'>" . $mods  . "</div>\n";
+            } else {
+                echo "<div class='hide-mods'>No Mods</div>\n";
+            } ?>
 					        </div>
 					        <div class='modal-footer'>
 					          <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
@@ -77,8 +78,9 @@ function secondsToString($seconds) {
 				  </div>
 				</div>
 				<div class="col-md-6">	 Players: <?php if ($server['gq_numplayers'] == 0) {
-					echo "Server empty";
-				} else { ?>
+                echo "Server empty";
+            } else {
+                ?>
 					<a href=# data-toggle="modal" data-target="#playerModal<?php echo $key; ?>">
 					<?php echo $server['gq_numplayers'] . "/" . $server['gq_maxplayers']; ?>
 					</a>
@@ -99,14 +101,13 @@ function secondsToString($seconds) {
 												</tr>
 											</thead>
 											<tbody>
-												<?php foreach ($server['players'] as $player)
-							{
-								echo "<tr>\n";
-									echo "<td>".$player['gq_name']."</td>\n";
-									echo "<td>".$player['gq_score']."</td>\n";
-									echo "<td>".secondsToString($player['gq_time'])."</td>\n";
-								echo "</tr>\n";
-							} ?>
+												<?php foreach ($server['players'] as $player) {
+                    echo "<tr>\n";
+                    echo "<td>".$player['gq_name']."</td>\n";
+                    echo "<td>".$player['gq_score']."</td>\n";
+                    echo "<td>".secondsToString($player['gq_time'])."</td>\n";
+                    echo "</tr>\n";
+                } ?>
 											</tbody>
 										</table>
 									</div>
@@ -116,7 +117,8 @@ function secondsToString($seconds) {
 							</div>
 						</div>
 					</div>
-				<?php }	?>
+				<?php 
+            } ?>
 				</div>
 			</div>
 			<div class="row">
@@ -127,17 +129,19 @@ function secondsToString($seconds) {
 		</div>
 		<hr/>
 
-		<?php }
-			else 	{
-		?>
+		<?php 
+        } else {
+            ?>
 			<div class="container">
 				<p class="text-danger">The server <?php echo $key ?> is down.</p>
 			</div>
 			<hr/>
 		<?php
-						}
-					} ?>
+
+        }
+    } ?>
 
 
 	<?php exit(); ?>
-<?php } ?>
+<?php 
+} ?>

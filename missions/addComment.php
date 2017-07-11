@@ -31,5 +31,3 @@
   error_log($stmt);
   $stmt=null;
   header('Location: /mission.php?id='.$_POST['id']);
-
- ?>

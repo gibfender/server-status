@@ -1,6 +1,6 @@
 <?php
 require_once '../settings.php';
-require_once( "query-servers.php"); ?>
+require_once("query-servers.php"); ?>
 
 <?php
 // Call the class, and add your servers.
@@ -11,34 +11,33 @@ $gq->setOption('timeout', 3); //in seconds
 // Send requests, and parse the data
 $results = $gq->process();
 foreach ($results as $key => $server) {
-	if ($key == 'SRV1') {
-		$numplayers = $server['gq_numplayers'];
-		if (($server['gq_mapname'] == '') or ($numplayers > '0')) {
-			$locked = 'False';
-		} else {
-			$locked = 'True';
-		};
-		if ($server['gq_numplayers'] > '0') {
-			$unlockable = 'True';
-			try {
-						$missions = array();
-						$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-						$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-						$stmt = $conn->prepare("SELECT `name` FROM `missions` WHERE (`minplayers`<=$numplayers) AND (`maxplayers`>=$numplayers) AND (`broken`='0')");
-						$stmt->execute();
-						$result = $stmt->fetchAll(PDO::FETCH_COLUMN);
-						$arr = $result;
-						$rand_key = array_rand($arr);
-						$rand_value = $arr[$rand_key];
-			}
-			catch (PDOException $e) {
-							echo "Error: " . $e->getMessage();
-			}
-			$conn = null;
-		} else {
-			$unlockable = 'False';
-		}
-}
+    if ($key == 'SRV1') {
+        $numplayers = $server['gq_numplayers'];
+        if (($server['gq_mapname'] == '') or ($numplayers > '0')) {
+            $locked = 'False';
+        } else {
+            $locked = 'True';
+        };
+        if ($server['gq_numplayers'] > '0') {
+            $unlockable = 'True';
+            try {
+                $missions = array();
+                $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $stmt = $conn->prepare("SELECT `name` FROM `missions` WHERE (`minplayers`<=$numplayers) AND (`maxplayers`>=$numplayers) AND (`broken`='0')");
+                $stmt->execute();
+                $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
+                $arr = $result;
+                $rand_key = array_rand($arr);
+                $rand_value = $arr[$rand_key];
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
+            $conn = null;
+        } else {
+            $unlockable = 'False';
+        }
+    }
 }
  ?>
 
@@ -129,11 +128,13 @@ foreach ($results as $key => $server) {
                 <div class="col-md-1">
                 </div>
                 <div class="col-md-10">
-                    <?php if ($numplayers> 0) { echo "
+                    <?php if ($numplayers> 0) {
+     echo "
                     <hr/>
                     <h2>Suggested mission: ".$rand_value."</h2>
                     <br/>
-                    <p>Suggested missions are selected randomly from missions where the total number of players on the server is greater than the minimum and less that the maximum number of players specified in the mission metadata.</p>"; } ?>
+                    <p>Suggested missions are selected randomly from missions where the total number of players on the server is greater than the minimum and less that the maximum number of players specified in the mission metadata.</p>";
+ } ?>
                 </div>
                 <div class="col-md-1">
                 </div>
@@ -165,13 +166,14 @@ foreach ($results as $key => $server) {
                                 </thead>
                                 <tbody>
 																	<?php
-																		try {
-																					$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-																					$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-																					$stmt = $conn->prepare("SELECT * FROM `missions` WHERE broken='0'");
-																					$stmt->execute();
-																					$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-																				while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
+                                                                        try {
+                                                                            $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
+                                                                            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                                                            $stmt = $conn->prepare("SELECT * FROM `missions` WHERE broken='0'");
+                                                                            $stmt->execute();
+                                                                            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                                                                            while ($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
+                                                                                ?>
                                     <tr>
                                         <td>
                                             <a href="mission?id=<?php echo $row['id']; ?>">
@@ -200,13 +202,13 @@ foreach ($results as $key => $server) {
                                             <?php echo $row[ 'dateupdated'] ?>
                                         </td>
                                     </tr>
-																		<?php }
-						}
-						catch (PDOException $e) {
-										echo "Error: " . $e->getMessage();
-						}
-						$conn = null;
-				?>
+																		<?php 
+                                                                            }
+                                                                        } catch (PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                        }
+                        $conn = null;
+                ?>
                                 </tbody>
                             </table>
                         </div>
@@ -224,13 +226,14 @@ foreach ($results as $key => $server) {
                                 </thead>
                                 <tbody>
 																	<?php
-						try {
-									$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-									$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-									$stmt = $conn->prepare("SELECT * FROM `missions` WHERE broken='1'");
-									$stmt->execute();
-									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
+                        try {
+                            $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
+                            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                            $stmt = $conn->prepare("SELECT * FROM `missions` WHERE broken='1'");
+                            $stmt->execute();
+                            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                            while ($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
+                                ?>
                                     <tr>
                                         <td>
                                             <a href="mission?id=<?php echo $row['id']; ?>">
@@ -259,13 +262,13 @@ foreach ($results as $key => $server) {
                                             <?php echo $row[ 'dateupdated'] ?>
                                         </td>
                                     </tr>
-																		<?php }
-						}
-						catch (PDOException $e) {
-										echo "Error: " . $e->getMessage();
-						}
-						$conn = null;
-				?>
+																		<?php 
+                            }
+                        } catch (PDOException $e) {
+                            echo "Error: " . $e->getMessage();
+                        }
+                        $conn = null;
+                ?>
                                 </tbody>
                             </table>
                         </div>

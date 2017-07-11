@@ -49,13 +49,14 @@
       				</thead>
       				<tbody>
       					<?php
-      						try {
-      									$conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-      									$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      									$stmt = $conn->prepare("SELECT `filename`, `id`, `name`, `author`, `brokentype`, `brokendes`, `broken` FROM `missions` WHERE `broken`='1'");
-      									$stmt->execute();
-      									$result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-      								while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) { ?>
+                              try {
+                                  $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
+                                  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                  $stmt = $conn->prepare("SELECT `filename`, `id`, `name`, `author`, `brokentype`, `brokendes`, `broken` FROM `missions` WHERE `broken`='1'");
+                                  $stmt->execute();
+                                  $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+                                  while ($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
+                                      ?>
       									<tr>
       										<td><a href="mission?id=<?php echo $row['id']; ?>"><?php echo $row['name'] ?></a></td>
       									  <td><?php echo $row['author'] ?></td>
@@ -63,14 +64,14 @@
       									  <td><?php echo $row['brokendes'] ?></td>
 
       									</tr>
-      							<?php }
-      						}
-      						catch (PDOException $e) {
-      										echo "Error: " . $e->getMessage();
-      						}
+      							<?php 
+                                  }
+                              } catch (PDOException $e) {
+                                  echo "Error: " . $e->getMessage();
+                              }
 
-      						$conn = null;
-      				?>
+                              $conn = null;
+                      ?>
       			</tbody>
       			</table>
           </div>

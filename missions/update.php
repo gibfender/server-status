@@ -32,4 +32,4 @@ require '../settings.php';
                                     WHERE id = '$id'";
         $pdo->prepare($sql)->execute([$missionname,$datecreated,$version,$minplayers,$maxplayers,$terrain,$author,$description,$gamemode]);
         header('Location: /mission.php?id='.$id);
-?>
+?> 

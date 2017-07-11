@@ -27,5 +27,3 @@ rename($missionsdir.$_POST['filename'], $brokendir.$_POST['filename']);
                                     WHERE id = '$id'";
         $pdo->prepare($sql)->execute([1,$brokentype,$brokendes]);
         header('Location: /mission.php?id='.$id);
-
-?>

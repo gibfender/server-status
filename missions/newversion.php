@@ -10,54 +10,54 @@ include '../settings.php';
 
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-          function updateversion() {
-            include '../settings.php';
-            require_once 'res/library/HTMLPurifier.auto.php';
-            $config = HTMLPurifier_Config::createDefault();
-            $purifier = new HTMLPurifier($config);
-            $id = $purifier->purify($_POST['id']);
-            $purifier = new HTMLPurifier($config);
-            $version = $purifier->purify($_POST['version']);
-            $dsn = "mysql:host=$servername;dbname=$dbname;";
-            $opt = [
+            function updateversion()
+            {
+                include '../settings.php';
+                require_once 'res/library/HTMLPurifier.auto.php';
+                $config = HTMLPurifier_Config::createDefault();
+                $purifier = new HTMLPurifier($config);
+                $id = $purifier->purify($_POST['id']);
+                $purifier = new HTMLPurifier($config);
+                $version = $purifier->purify($_POST['version']);
+                $dsn = "mysql:host=$servername;dbname=$dbname;";
+                $opt = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
               ];
-            $pdo = new PDO($dsn, $username, $password, $opt);
-            $sql = "UPDATE missions SET
+                $pdo = new PDO($dsn, $username, $password, $opt);
+                $sql = "UPDATE missions SET
                                         dateupdated = CURDATE(),
                                         version = ?
                                         WHERE id = '$id'";
-            $stmt = $pdo->prepare($sql)->execute([$version]);
-            error_log($stmt);
-            $stmt = null;
+                $stmt = $pdo->prepare($sql)->execute([$version]);
+                error_log($stmt);
+                $stmt = null;
+            };
 
-          };
+            function addreleasenotes()
+            {
+                include '../settings.php';
+                require_once 'res/library/HTMLPurifier.auto.php';
+                $config = HTMLPurifier_Config::createDefault();
+                $purifier = new HTMLPurifier($config);
+                $id = $purifier->purify($_POST['id']);
+                $purifier = new HTMLPurifier($config);
+                $version = $purifier->purify($_POST['version']);
+                $config = HTMLPurifier_Config::createDefault();
+                $config->set('HTML.Allowed', 'p[align|style],strong,a[href],em,table[class|width|cellpadding],td,tr,h3,h4,h5,hr,br,u,ul,ol,li');
+                $purifier = new HTMLPurifier($config);
+                $note = $_POST['note'];
 
-          function addreleasenotes() {
-            include '../settings.php';
-            require_once 'res/library/HTMLPurifier.auto.php';
-            $config = HTMLPurifier_Config::createDefault();
-            $purifier = new HTMLPurifier($config);
-            $id = $purifier->purify($_POST['id']);
-            $purifier = new HTMLPurifier($config);
-            $version = $purifier->purify($_POST['version']);
-            $config = HTMLPurifier_Config::createDefault();
-            $config->set('HTML.Allowed', 'p[align|style],strong,a[href],em,table[class|width|cellpadding],td,tr,h3,h4,h5,hr,br,u,ul,ol,li');
-            $purifier = new HTMLPurifier($config);
-            $note = $_POST['note'];
-
-            $dsn = "mysql:host=$servername;dbname=$dbname;";
-            $opt = [
+                $dsn = "mysql:host=$servername;dbname=$dbname;";
+                $opt = [
                 PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
               ];
-            $pdo = new PDO($dsn, $username, $password, $opt);
-            $sql = "INSERT INTO releasenotes(version,note,date,id)
+                $pdo = new PDO($dsn, $username, $password, $opt);
+                $sql = "INSERT INTO releasenotes(version,note,date,id)
                     VALUES (?,?,CURDATE(),?)";
-            $stmt=$pdo->prepare($sql)->execute([$version,$note,$id]);
-            error_log($stmt);
-            $stmt=null;
-          };
+                $stmt=$pdo->prepare($sql)->execute([$version,$note,$id]);
+                error_log($stmt);
+                $stmt=null;
+            };
 
             $name     = $_FILES['file']['name'];
             $tmpName  = $_FILES['file']['tmp_name'];
@@ -69,7 +69,7 @@ include '../settings.php';
                 case UPLOAD_ERR_OK:
                     $valid = true;
                     //validate file extensions
-                    if ( !in_array($ext, array('pbo')) ) {
+                    if (!in_array($ext, array('pbo'))) {
                         $valid = false;
                         $response = 'Invalid file extension.';
                     }
@@ -83,9 +83,9 @@ include '../settings.php';
                         updateversion();
                         addreleasenotes();
                         if (file_exists($missionsdir.$name)) {
-                          move_uploaded_file($tmpName,$missionsdir.$name);
+                            move_uploaded_file($tmpName, $missionsdir.$name);
                         } else {
-                          move_uploaded_file($tmpName,$brokendir.$name);
+                            move_uploaded_file($tmpName, $brokendir.$name);
                         }
                         header('Location: /mission.php?id='.$_POST['id']);
                         exit;
@@ -118,5 +118,4 @@ include '../settings.php';
             }
 
             echo $response;
-}
- ?>
+        }
