@@ -18,7 +18,7 @@
            $maxplayers = $row['maxplayers'];
            $description = $row['description'];
            $dateupdated = $row['dateupdated'];
-           $datecreate = $row['datecreated'];
+           $datecreated = $row['datecreated'];
            $brokentype = $row['brokentype'];
            $brokendes = $row['brokendes'];
            $broken = $row['broken'];
@@ -359,7 +359,7 @@ $('#open').click(function() {
                  var date_input=$('input[name="datecreated"]'); //our date input has the name "date"
                  var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                  var options={
-                   format: 'yyyy/mm/dd',
+                   format: 'yyyy-mm-dd',
                    container: container,
                    todayHighlight: true,
                    autoclose: true,
