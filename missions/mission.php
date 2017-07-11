@@ -1,5 +1,6 @@
-<?php require_once '../settings.php'; ?>
 <?php
+require_once '../settings.php';
+require_once 'query-servers.php';
    $id = $_GET['id'];
      try {
            $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
@@ -17,8 +18,10 @@
            $minplayers = $row['minplayers'];
            $maxplayers = $row['maxplayers'];
            $description = $row['description'];
-           $dateupdated = new DateTime($row['dateupdated']);
-           $datecreated = new DateTime($row['datecreated']);
+           $SQLdateupdated = $row['dateupdated'];
+           $dateupdated = strtotime($SQLdateupdated);
+           $SQLdatecreated = $row['datecreated'];
+           $datecreated = strtotime($SQLdatecreated);
            $brokentype = $row['brokentype'];
            $brokendes = $row['brokendes'];
            $broken = $row['broken'];
@@ -35,7 +38,7 @@
       <title><?php echo $name;?></title>
       <link href="res/css/bootstrap.min.css" rel="stylesheet">
       <script src="res/js/jquery-3.1.1.min.js"></script>
-      <script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=<?php echo $tinyMCEAPI?>"></script>
+      <script src="https://cloud.tinymce.com/stable/tinymce.min.js<?php echo $tinyMCEAPI?>"></script>
       <script>tinymce.init({
         selector: 'textarea',
         height: 400,
@@ -170,12 +173,12 @@ $('#open').click(function() {
                      echo "N/A";
                      } else {
 
-                     echo date_format($datecreated, 'd/m/Y');
+                     echo date('d/m/Y', $datecreated);
                      }
                      ?></h4>
                </div>
                <div class="col-md-4">
-                  <h4>Last Updated: <?php echo date_format($dateupdated, 'd/m/Y')?></h4>
+                  <h4>Last Updated: <?php echo date('d/m/Y', $dateupdated)?></h4>
                </div>
                <div class="col-md-4">
                </div>
@@ -422,7 +425,7 @@ $('#open').click(function() {
                </div>
                <div class="modal-body">
                   <div class="well">
-                     <form class="form-horizontal" id="mission_meta" action="update.php" method="post"  enctype="multipart/form-data" role="form" novalidate>
+                     <form class="form-horizontal" id="mission_meta" action="update.php" method="post"  enctype="multipart/form-data" role="form">
                         <div class="form-group">
                            <label for="missionname" class="col-sm-2">Mission Name</label>
                            <div class="col-sm-4">
@@ -438,7 +441,7 @@ $('#open').click(function() {
                            <!-- Date input -->
                            <label class="col-sm-2" for="datecreated">First Uploaded</label>
                            <div class="col-sm-4">
-                              <input class="form-control" id="date" name="datecreated" id="datecreated" value="<?php echo date_format($datecreated, 'd/m/Y') ?>" type="text" required />
+                              <input class="form-control" id="date" name="datecreated" id="datecreated" <?php if (!empty($datecreated)) {echo 'value="' .date('d/m/Y', $datecreated);'"';} ?> type="text" required />
                            </div>
                            <label for="version" class="col-sm-2">Version</label>
                            <div class="col-sm-4">
