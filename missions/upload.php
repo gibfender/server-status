@@ -1,7 +1,5 @@
 <?php
 require '../settings.php';
-/*TODO When a new mission is uploaded, get php to generate a 4 character alphanumeric code. It can behave like a "password" for that file.(edited)
-And if they want to overwrite it they just enter the code. */
 
 // Create connection
 
@@ -38,10 +36,10 @@ if ($conn->connect_error) {
 
           //move the file from temp location to MPMissions folder
           if (move_uploaded_file($file_tmp, $missionsdir.$file_name)) {
-              $query = "INSERT INTO missions(filename, dateupdated, name, minplayers, maxplayers, terrain, author, description, gamemode)
+              $query = "INSERT INTO missions(filename, datecreated, name, minplayers, maxplayers, terrain, author, description, gamemode)
                           VALUES ('$file_name', CURDATE(), '$missionname', '$minplayers', '$maxplayers', '$terrain', '$author', '$description', '$gamemode')
                           ON DUPLICATE KEY UPDATE
-                          dateupdated = CURDATE(),
+                          datecreated = CURDATE(),
                           name = '$missionname',
                           minplayers = '$minplayers',
                           maxplayers = '$maxplayers',
