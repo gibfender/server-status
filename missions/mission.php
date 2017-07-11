@@ -636,11 +636,17 @@ $('#open').click(function() {
                   <h4 class="modal-title">Delete Mission</h4>
                </div>
                <div class="modal-body">
-                  <p>Are you sure you want to remove this mission from the server and database?</p>
+                 <form class="" action="delete.php" method="post">
+                   <input type="hidden" name="id" value="<?php echo($id); ?>" />
+                   <input type="hidden" name="filename" value="<?php echo($filename); ?>" />
+                    <p>Are you sure you want to remove this mission from the server and database?</p>
+
+
                </div>
                <div class="modal-footer">
-                  <button type="button" class="btn btn-danger btn-delete" name="btn-delete" data-id="<?php echo $id; ?>" data-filename="<?php echo $filename; ?>" data-dismiss="modal">Delete Mission</button>
+                 <input type="submit" class="btn btn-danger" value="Delete Mission" />
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </form>
                </div>
             </div>
          </div>

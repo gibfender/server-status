@@ -13,7 +13,11 @@ if(isset($_POST['id'])) {
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   $stmt = $conn->prepare("DELETE FROM missions WHERE id=('".$_POST['id']."')");
   $stmt->execute();
+  $stmt = $conn->prepare("DELETE FROM comments WHERE id=('".$_POST['id']."')");
+  $stmt->execute();
+  $stmt = $conn->prepare("DELETE FROM releasenotes WHERE id=('".$_POST['id']."')");
+  $stmt->execute();
   $conn = null;
 }
-
+header('Location: /');
 ?>
