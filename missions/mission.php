@@ -12,10 +12,10 @@ $results = $gq->process();
 foreach ($results as $key => $server) {
 	if ($key == 'SRV1') {
 		$numplayers = $server['gq_numplayers'];
-		if (($server['gq_mapname'] == '') or ($numplayers > '0')) {
-			$locked = 'False';
+if (($server['gq_mapname'] == '')) {
+			$locked = 'false';
 		} else {
-			$locked = 'True';
+			$locked = 'true';
 		};
 		if ($server['gq_numplayers'] > '0') {
 			$unlockable = 'True';
@@ -23,7 +23,9 @@ foreach ($results as $key => $server) {
 			$unlockable = 'False';
 		}
 }
-}
+};
+
+var_dump($locked);
    $id = $_GET['id'];
      try {
            $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
@@ -123,7 +125,7 @@ $('#open').click(function() {
                   <h1><?php echo $name?></h1>
                </div>
                <div class="col-md-4 pull-right">
-                 
+
                   <a href="<?php if ($broken=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
                   <button type="button" class="btn btn-primary" <?php if($locked == 'true' && $broken == '0'){echo 'disabled';} ?> name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
                   <button type="button" class="btn btn-primary" name="btn-update-meta" data-toggle="modal" data-target="#update-modal"><span class="glyphicon glyphicon-pencil"></span></button>
@@ -293,7 +295,7 @@ $('#open').click(function() {
                   PDO::ATTR_EMULATE_PREPARES   => false
                  ];
                $pdo = new PDO($dsn, $username, $password, $opt);
-               $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY date desc")->fetchAll();
+               $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY id desc")->fetchAll();
                if (empty($stmt)) {
                  echo '<div class="container">
                    <div class="row">
@@ -351,7 +353,7 @@ $('#open').click(function() {
           PDO::ATTR_EMULATE_PREPARES   => false
          ];
        $pdo = new PDO($dsn, $username, $password, $opt);
-       $stmt= $pdo->query("SELECT * from comments WHERE id='$id' ORDER BY date desc")->fetchAll();
+       $stmt= $pdo->query("SELECT * from comments WHERE id='$id' ORDER BY id desc")->fetchAll();
        if (empty($stmt)) {
          echo '<div class="container">
            <div class="row">
