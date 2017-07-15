@@ -25,7 +25,6 @@ if (($server['gq_mapname'] == '')) {
 }
 };
 
-var_dump($locked);
    $id = $_GET['id'];
      try {
            $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
