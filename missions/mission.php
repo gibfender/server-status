@@ -10,44 +10,47 @@ $gq->setOption('timeout', 3); //in seconds
 // Send requests, and parse the data
 $results = $gq->process();
 foreach ($results as $key => $server) {
-    if ($key == 'SRV1') {
-        $numplayers = $server['gq_numplayers'];
-        if (($server['gq_mapname'] == '') or ($numplayers > '0')) {
-            $locked = 'False';
-        } else {
-            $locked = 'True';
-        };
-        if ($server['gq_numplayers'] > '0') {
-            $unlockable = 'True';
-        } else {
-            $unlockable = 'False';
-        }
-    }
+	if ($key == 'SRV1') {
+		$numplayers = $server['gq_numplayers'];
+		if (($server['gq_mapname'] == '') or ($numplayers > '0')) {
+			$locked = 'False';
+		} else {
+			$locked = 'True';
+		};
+		if ($server['gq_numplayers'] > '0') {
+			$unlockable = 'True';
+		} else {
+			$unlockable = 'False';
+		}
+}
 }
    $id = $_GET['id'];
      try {
-         $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-         $stmt = $conn->prepare("SELECT * FROM `missions` WHERE `id`=$id");
-         $stmt->execute();
-         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-         while ($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
-             $filename = $row['filename'];
-             $name = $row['name'];
-             $terrain = $row['terrain'];
-             $version = $row['version'];
-             $author = $row['author'];
-             $gamemode = $row['gamemode'];
-             $minplayers = $row['minplayers'];
-             $maxplayers = $row['maxplayers'];
-             $description = $row['description'];
-             $SQLdateupdated = $row['dateupdated'];
-             $dateupdated = strtotime($SQLdateupdated);
-             $SQLdatecreated = $row['datecreated'];
-             $datecreated = strtotime($SQLdatecreated);
-             $brokentype = $row['brokentype'];
-             $brokendes = $row['brokendes'];
-             $broken = $row['broken']; ?>
+           $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
+           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+           $stmt = $conn->prepare("SELECT * FROM `missions` WHERE `id`=$id");
+           $stmt->execute();
+           $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+         while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
+           $filename = $row['filename'];
+           $name = $row['name'];
+           $terrain = $row['terrain'];
+           $version = $row['version'];
+           $author = $row['author'];
+           $gamemode = $row['gamemode'];
+           $minplayers = $row['minplayers'];
+           $maxplayers = $row['maxplayers'];
+           $description = $row['description'];
+           $SQLdateupdated = $row['dateupdated'];
+           $dateupdated = strtotime($SQLdateupdated);
+           $SQLdatecreated = $row['datecreated'];
+           $datecreated = strtotime($SQLdatecreated);
+           $brokentype = $row['brokentype'];
+           $brokendes = $row['brokendes'];
+           $broken = $row['broken'];
+
+
+           ?>
 <!DOCTYPE html>
 <html>
    <head>
@@ -55,7 +58,7 @@ foreach ($results as $key => $server) {
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <link rel="shortcut icon" href="/res/images/favicon.ico">
-      <title><?php echo $name; ?></title>
+      <title><?php echo $name;?></title>
       <link href="res/css/bootstrap.min.css" rel="stylesheet">
       <script src="res/js/jquery-3.1.1.min.js"></script>
       <script src="https://cloud.tinymce.com/stable/tinymce.min.js<?php echo $tinyMCEAPI?>"></script>
@@ -120,36 +123,23 @@ $('#open').click(function() {
                   <h1><?php echo $name?></h1>
                </div>
                <div class="col-md-4 pull-right">
-                  <a href="<?php if ($broken=='0') {
-                 echo "http://srv1missions.$groupsite/$filename";
-             } else {
-                 echo "http://broken.$groupsite/$filename";
-             } ?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
-                  <button type="button" class="btn btn-primary" <?php if ($locked == 'true' && $broken == '0') {
-                 echo 'disabled';
-             } ?> name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
+                 
+                  <a href="<?php if ($broken=='0') {echo "http://srv1missions.$groupsite/$filename";} else {echo "http://broken.$groupsite/$filename";}?>"><button type="button" class="btn btn-primary" name="btn-download"><span class="glyphicon glyphicon-download"></span></button></a>
+                  <button type="button" class="btn btn-primary" <?php if($locked == 'true' && $broken == '0'){echo 'disabled';} ?> name="btn-update" data-toggle="modal" data-target="#newversion"><span class="glyphicon glyphicon-upload"></span></button>
                   <button type="button" class="btn btn-primary" name="btn-update-meta" data-toggle="modal" data-target="#update-modal"><span class="glyphicon glyphicon-pencil"></span></button>
-                  <?php if ($broken == '0') {
-                 echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal' ".(($locked=="true") ? "disabled" : "")."><span class='glyphicon glyphicon-exclamation-sign'></span></button>";
-             } else {
-                 echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";
-             }; ?>
-                  <button type="button" class="btn btn-danger"  <?php if ($locked == 'true' && $broken == '0') {
-                 echo 'disabled';
-             } ?> data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
+                  <?php if ($broken == '0') {echo "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#broken-modal' ".(($locked=="true") ? "disabled" : "")."><span class='glyphicon glyphicon-exclamation-sign'></span></button>";} else {echo "<button type='button' class='btn btn-success' data-toggle='modal' data-target='#fixed-modal'><span class='glyphicon glyphicon-ok'></span></button>";};?>
+                  <button type="button" class="btn btn-danger"  <?php if($locked == 'true' && $broken == '0'){echo 'disabled';} ?> data-toggle="modal" data-target="#delete-modal"><span class="glyphicon glyphicon-trash"></span></button>
                   <br/>
-                  <?php if ($locked=="true" && $broken == '0') {
-                 echo"<small class='text-muted'>As the server is currently active, some functionality has been disabled.</small>";
-             } ?>
+                  <?php if($locked=="true" && $broken == '0'){echo"<small class='text-muted'>As the server is currently active, some functionality has been disabled.</small>";} ?>
                </div>
             </div>
             <div class="row">
                <div class="col-md-6">
                   <h4>Version: <?php if (empty($version)) {
-                 echo "N/A";
-             } else {
-                 echo $version;
-             } ?></h4>
+                     echo "N/A";
+                     } else {
+                     echo $version;
+                     }?></h4>
                </div>
                <!--<div class="col-md-4 pull-right">
                   <div class="btn-group">
@@ -160,8 +150,7 @@ $('#open').click(function() {
             </div>
          </div>
       </div>
-      <?php if ($broken == '1') {
-                 echo "
+      <?php if ($broken == '1') { echo "
         <div class='container'>
           <div class='well'>
             <div class='row'>
@@ -175,7 +164,7 @@ $('#open').click(function() {
             </div>
           </div>
         </div>";
-             } ?>
+    } ?>
       <div class="container">
          <div class="well">
            <div class="row">
@@ -207,10 +196,12 @@ $('#open').click(function() {
             <div class="row">
                <div class="col-md-4">
                   <h4>First Uploaded: <?php if (empty($datecreated)) {
-                 echo "N/A";
-             } else {
-                 echo date('d/m/Y', $datecreated);
-             } ?></h4>
+                     echo "N/A";
+                     } else {
+
+                     echo date('d/m/Y', $datecreated);
+                     }
+                     ?></h4>
                </div>
                <div class="col-md-4">
                   <h4>Last Updated: <?php echo date('d/m/Y', $dateupdated)?></h4>
@@ -221,10 +212,10 @@ $('#open').click(function() {
             <!--<div class="row">
                <div class="col-md-4">
                   <h4>Times Played: <?php if (empty($row['playcount'])) {
-                 echo "N/A";
-             } else {
-                 echo $row['playcount'];
-             } ?></h4>
+                     echo "N/A";
+                     } else {
+                     echo $row['playcount'];
+                     }?></h4>
                </div>
                <div class="col-md-4">
                </div>
@@ -280,10 +271,10 @@ $('#open').click(function() {
             </div>
          </div>
       </div>
-      <?php 
+      <?php }
          }
-     } catch (PDOException $e) {
-             echo "Error: " . $e->getMessage();
+         catch (PDOException $e) {
+                 echo "Error: " . $e->getMessage();
          }
 
          $conn = null;
@@ -302,17 +293,18 @@ $('#open').click(function() {
                   PDO::ATTR_EMULATE_PREPARES   => false
                  ];
                $pdo = new PDO($dsn, $username, $password, $opt);
-               $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY note_id desc")->fetchAll();
+               $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY date desc")->fetchAll();
                if (empty($stmt)) {
-                   echo '<div class="container">
+                 echo '<div class="container">
                    <div class="row">
                      <div class="col-md"><p>None yet!</p>
                      </div>
                    </div>
                    </div>';
                } else {
-                   foreach ($stmt as $row) {
-                       echo '<div class="container">
+               foreach ($stmt as $row)
+                {
+                  echo '<div class="container">
                   <div class="well">
                       <div class="row">
                         <div class="col-md-6">
@@ -335,8 +327,8 @@ $('#open').click(function() {
                       </div>
                     </div>
                     <hr/>';
-                   }
-               };
+                  }
+                };
                 $stmt=null;
                ?>
          </div>
@@ -359,17 +351,18 @@ $('#open').click(function() {
           PDO::ATTR_EMULATE_PREPARES   => false
          ];
        $pdo = new PDO($dsn, $username, $password, $opt);
-       $stmt= $pdo->query("SELECT * from comments WHERE id='$id' ORDER BY comment_id desc")->fetchAll();
+       $stmt= $pdo->query("SELECT * from comments WHERE id='$id' ORDER BY date desc")->fetchAll();
        if (empty($stmt)) {
-           echo '<div class="container">
+         echo '<div class="container">
            <div class="row">
              <div class="col-md"><p>None yet!</p>
              </div>
            </div>
            </div>';
        } else {
-           foreach ($stmt as $row) {
-               echo '<div class="container-fluid">
+       foreach ($stmt as $row)
+        {
+          echo '<div class="container-fluid">
               <div class="well">
               <div class="row">
                 <div class="col-md-4">
@@ -391,8 +384,8 @@ $('#open').click(function() {
               </div>
               </div>
             </div> ';
-           }
-       };
+          }
+        };
         $stmt=null;
        ?>
   </div>
@@ -474,10 +467,7 @@ $('#open').click(function() {
                            <!-- Date input -->
                            <label class="col-sm-2" for="datecreated">First Uploaded</label>
                            <div class="col-sm-4">
-                              <input class="form-control" id="date" name="datecreated" id="datecreated" <?php if (!empty($datecreated)) {
-           echo 'value="' .date('d/m/Y', $datecreated);
-           '"';
-       } ?> type="text" required />
+                              <input class="form-control" id="date" name="datecreated" id="datecreated" <?php if (!empty($datecreated)) {echo 'value="' .date('d/m/Y', $datecreated);'"';} ?> type="text" required />
                            </div>
                            <label for="version" class="col-sm-2">Version</label>
                            <div class="col-sm-4">
