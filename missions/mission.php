@@ -294,7 +294,7 @@ $('#open').click(function() {
                   PDO::ATTR_EMULATE_PREPARES   => false
                  ];
                $pdo = new PDO($dsn, $username, $password, $opt);
-               $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY id desc")->fetchAll();
+               $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY note_id DESC")->fetchAll();
                if (empty($stmt)) {
                  echo '<div class="container">
                    <div class="row">
@@ -352,7 +352,7 @@ $('#open').click(function() {
           PDO::ATTR_EMULATE_PREPARES   => false
          ];
        $pdo = new PDO($dsn, $username, $password, $opt);
-       $stmt= $pdo->query("SELECT * from comments WHERE id='$id' ORDER BY id desc")->fetchAll();
+       $stmt= $pdo->query("SELECT * from comments WHERE id='$id' ORDER BY comment_id DESC")->fetchAll();
        if (empty($stmt)) {
          echo '<div class="container">
            <div class="row">
