@@ -468,7 +468,11 @@ $('#open').click(function() {
                            <!-- Date input -->
                            <label class="col-sm-2" for="datecreated">First Uploaded</label>
                            <div class="col-sm-4">
-                              <input class="form-control" id="date" name="datecreated" id="datecreated" <?php if (!empty($datecreated)) {echo 'value="' .date('d/m/Y', $datecreated);'"';} ?> type="text" required />
+                              <input class="form-control" id="date" name="datecreated" id="datecreated" type="text" required <?php if (!empty($datecreated)) {
+                              	echo "value='";
+																echo date('d/m/Y', $datecreated);
+																echo "'";
+                              } ?> />
                            </div>
                            <label for="version" class="col-sm-2">Version</label>
                            <div class="col-sm-4">

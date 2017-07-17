@@ -16,6 +16,15 @@ $missionsdir = "C:/dir/to/Arma/MPMissions/";
 $brokendir = "C:/dir/to/Broken/";
 $deleteddir = "C:/dir/to/Delete/";
 
+//Firedaemon Fusion settings
+$fd_enabled = "False"; //Set to "False" if you do not use Firedaemon to manage your servers
+$fd_URL = "http://URL:PORT"; //URL and port you use to login to FireDaemon fusion
+$fd_user = "USERNAME"; // Username used to login to Firedaemon Fusion (I suggest creating a separate account for this)
+$fd_pass = "PASSWORD"; //Password used to login to Firedaemon
+
+//TinyMCE API key
+$tinyMCEAPI = "?apikey=APIKEY";
+
 //change this to reflect the servers that you want to query
 $servers = array(
 	array(
