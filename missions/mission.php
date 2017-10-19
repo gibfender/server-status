@@ -508,6 +508,7 @@ $('#open').click(function() {
                                  <option>Kolgujev</option>
                                  <option>Malden</option>
                                  <option>Nogova</option>
+																 <option>Lythium</option>
                                  <option>Lingor</option>
                                  <option>Porto</option>
                                  <option>Proving Grounds</option>

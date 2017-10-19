@@ -10,6 +10,33 @@
   	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   	<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js<?php echo $tinyMCEAPI?>"></script>
+    <script>tinymce.init({
+      selector: 'textarea',
+      height: 400,
+      branding: false,
+      plugins: [
+        'advlist autolink lists link charmap print preview hr anchor pagebreak',
+        'searchreplace wordcount visualblocks visualchars code fullscreen',
+        'insertdatetime nonbreaking save table contextmenu directionality'
+      ],
+      toolbar1: 'undo redo | insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link preview',
+      image_advtab: false
+     });
+     // Prevent bootstrap dialog from blocking focusin
+$(document).on('focusin', function(e) {
+  if ($(e.target).closest(".mce-window").length) {
+  e.stopImmediatePropagation();
+}
+});
+
+$('#open').click(function() {
+$("#dialog").dialog({
+  width: 800,
+  modal: true
+});
+});
+</script>
 
   	<title><?php echo "$groupname"; ?> Missions</title>
 
@@ -63,6 +90,7 @@
             <option>Kolgujev</option>
             <option>Malden</option>
             <option>Nogova</option>
+            <option>Lythium</option>
             <option>Lingor</option>
             <option>Porto</option>
             <option>Proving Grounds</option>
@@ -106,7 +134,7 @@
       <div class="form-group">
         <label for="description" class="col-sm-2">Description</label>
         <div class="col-sm-10">
-          <input type="textarea" rows="8" cols="50" class="form-control" name="description" id="description" placeholder="Russian marine assault on British-held town.">
+          <textarea class="form-control" name="description" id="description" placeholder="Russian marine assault on British-held town."></textarea>
         </div>
       </div>
       <legend>Select File</legend>
