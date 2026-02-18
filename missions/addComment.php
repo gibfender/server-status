@@ -1,33 +1,21 @@
 <?php
 
-  include '../settings.php';
-  require_once 'res/library/HTMLPurifier.auto.php';
+require '../settings.php';
+require_once 'db.php';
+require_once 'res/library/HTMLPurifier.auto.php';
 
-  $config = HTMLPurifier_Config::createDefault();
-  $purifier = new HTMLPurifier($config);
-  $id = $purifier->purify($_POST['id']);
+$config = HTMLPurifier_Config::createDefault();
+$config->set('HTML.Allowed', 'p[align|style],strong,a[href],em,table[class|width|cellpadding],td,tr,h3,h4,h5,hr,br,u,ul,ol,li');
+$purifier = new HTMLPurifier($config);
 
-  $config = HTMLPurifier_Config::createDefault();
-  $purifier = new HTMLPurifier($config);
-  $commenter = $purifier->purify($_POST['commenter']);
+$id        = (int) $_POST['id'];
+$version   = strip_tags($_POST['version'] ?? '');
+$commenter = strip_tags($_POST['commenter'] ?? '');
+$comment   = $purifier->purify($_POST['comment'] ?? '');
 
-  $config = HTMLPurifier_Config::createDefault();
-  $purifier = new HTMLPurifier($config);
-  $version = $purifier->purify($_POST['version']);
+$pdo = get_db();
+$pdo->prepare("INSERT INTO comments (name, comment, version, id, date) VALUES (?, ?, ?, ?, CURDATE())")
+    ->execute([$commenter, $comment, $version, $id]);
 
-  $config = HTMLPurifier_Config::createDefault();
-  $config->set('HTML.Allowed', 'p[align|style],strong,a[href],em,table[class|width|cellpadding],td,tr,h3,h4,h5,hr,br,u,ul,ol,li');
-  $purifier = new HTMLPurifier($config);
-  $comment = $purifier->purify($_POST['comment']);
-
-  $dsn = "mysql:host=$servername;dbname=$dbname;";
-  $opt = [
-      PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION
-    ];
-  $pdo = new PDO($dsn, $username, $password, $opt);
-  $sql = "INSERT INTO comments(name,comment,version,id,date)
-          VALUES (?,?,?,?,CURDATE())";
-  $stmt=$pdo->prepare($sql)->execute([$commenter,$comment,$version,$id]);
-  error_log($stmt);
-  $stmt=null;
-  header('Location: /mission.php?id='.$_POST['id']);
+header('Location: /mission.php?id=' . $id);
+exit;

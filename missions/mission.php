@@ -25,12 +25,12 @@ if (($server['gq_mapname'] == '')) {
 }
 };
 
-   $id = $_GET['id'];
+   require_once 'db.php';
+   $id = (int) $_GET['id'];
      try {
-           $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-           $stmt = $conn->prepare("SELECT * FROM `missions` WHERE `id`=$id");
-           $stmt->execute();
+           $conn = get_db();
+           $stmt = $conn->prepare("SELECT * FROM `missions` WHERE `id` = ?");
+           $stmt->execute([$id]);
            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
          while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
            $filename = $row['filename'];
@@ -59,7 +59,7 @@ if (($server['gq_mapname'] == '')) {
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <link rel="shortcut icon" href="/res/images/favicon.ico">
-      <title><?php echo $name;?></title>
+      <title><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');?></title>
       <link href="res/css/bootstrap.min.css" rel="stylesheet">
       <script src="res/js/jquery-3.1.1.min.js"></script>
       <script src="https://cloud.tinymce.com/stable/tinymce.min.js<?php echo $tinyMCEAPI?>"></script>
@@ -121,7 +121,7 @@ $('#open').click(function() {
          <div class="well">
             <div class="row">
                <div class="col-md-8">
-                  <h1><?php echo $name?></h1>
+                  <h1><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8')?></h1>
                </div>
                <div class="col-md-4 pull-right">
 
