@@ -1,13 +1,15 @@
-<?php require_once '../settings.php'; ?>
+<?php
+require_once '../settings.php';
+require_once 'db.php';
+?>
 <!DOCTYPE html>
 <html>
    <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <!--<meta http-equiv="refresh" content="3" >-->
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <link rel="shortcut icon" href="/res/images/favicon.ico">
-      <title>Mission Details: <?php echo $_POST['missionname'];?></title>
+      <title>Broken Missions</title>
       <link href="res/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="res/DataTables/datatables.min.css"/>
 
@@ -50,27 +52,20 @@
       				<tbody>
       					<?php
                               try {
-                                  $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-                                  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                  $stmt = $conn->prepare("SELECT `filename`, `id`, `name`, `author`, `brokentype`, `brokendes`, `broken` FROM `missions` WHERE `broken`='1'");
+                                  $conn = get_db();
+                                  $stmt = $conn->prepare("SELECT `id`, `name`, `author`, `brokentype`, `brokendes` FROM `missions` WHERE `broken` = 1");
                                   $stmt->execute();
-                                  $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-                                  while ($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
-                                      ?>
+                                  while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
       									<tr>
-      										<td><a href="mission?id=<?php echo $row['id']; ?>"><?php echo $row['name'] ?></a></td>
-      									  <td><?php echo $row['author'] ?></td>
-      									  <td><?php echo $row['brokentype'] ?></td>
-      									  <td><?php echo $row['brokendes'] ?></td>
-
+      										<td><a href="mission?id=<?php echo (int) $row['id']; ?>"><?php echo htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') ?></a></td>
+      									  <td><?php echo htmlspecialchars($row['author'], ENT_QUOTES, 'UTF-8') ?></td>
+      									  <td><?php echo htmlspecialchars($row['brokentype'], ENT_QUOTES, 'UTF-8') ?></td>
+      									  <td><?php echo htmlspecialchars($row['brokendes'], ENT_QUOTES, 'UTF-8') ?></td>
       									</tr>
-      							<?php 
-                                  }
+      							<?php }
                               } catch (PDOException $e) {
-                                  echo "Error: " . $e->getMessage();
+                                  error_log("brokenmissions.php error: " . $e->getMessage());
                               }
-
-                              $conn = null;
                       ?>
       			</tbody>
       			</table>
@@ -78,3 +73,4 @@
         </div>
       </div>
     </body>
+</html>
