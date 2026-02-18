@@ -1,22 +1,28 @@
 <?php
 
 require '../settings.php';
+require_once 'db.php';
 
-if (file_exists($missionsdir.$_POST['filename'])) {
-    rename($missionsdir.$_POST['filename'], $deleteddir.$_POST['filename']);
-} else {
-    rename($brokendir.$_POST['filename'], $deleteddir.$_POST['filename']);
+if (!isset($_POST['id'], $_POST['filename'])) {
+    http_response_code(400);
+    exit;
 }
 
-if (isset($_POST['id'])) {
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $stmt = $conn->prepare("DELETE FROM missions WHERE id=('".$_POST['id']."')");
-    $stmt->execute();
-    $stmt = $conn->prepare("DELETE FROM comments WHERE id=('".$_POST['id']."')");
-    $stmt->execute();
-    $stmt = $conn->prepare("DELETE FROM releasenotes WHERE id=('".$_POST['id']."')");
-    $stmt->execute();
-    $conn = null;
+// basename() prevents path traversal (e.g. ../../settings.php)
+$filename = basename($_POST['filename']);
+
+if (file_exists($missionsdir . $filename)) {
+    rename($missionsdir . $filename, $deleteddir . $filename);
+} elseif (file_exists($brokendir . $filename)) {
+    rename($brokendir . $filename, $deleteddir . $filename);
 }
+
+$pdo = get_db();
+$id  = (int) $_POST['id'];
+
+$pdo->prepare("DELETE FROM missions      WHERE id = ?")->execute([$id]);
+$pdo->prepare("DELETE FROM comments     WHERE id = ?")->execute([$id]);
+$pdo->prepare("DELETE FROM releasenotes WHERE id = ?")->execute([$id]);
+
 header('Location: /');
+exit;

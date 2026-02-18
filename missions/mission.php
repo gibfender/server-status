@@ -25,12 +25,12 @@ if (($server['gq_mapname'] == '')) {
 }
 };
 
-   $id = $_GET['id'];
+   require_once 'db.php';
+   $id = (int) $_GET['id'];
      try {
-           $conn = new PDO("mysql:host=$servername;dbname=$dbname", "$username", "$password");
-           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-           $stmt = $conn->prepare("SELECT * FROM `missions` WHERE `id`=$id");
-           $stmt->execute();
+           $conn = get_db();
+           $stmt = $conn->prepare("SELECT * FROM `missions` WHERE `id` = ?");
+           $stmt->execute([$id]);
            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
          while($row = $stmt->fetch(/* PDO::FETCH_ASSOC */)) {
            $filename = $row['filename'];
@@ -59,7 +59,7 @@ if (($server['gq_mapname'] == '')) {
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       <link rel="shortcut icon" href="/res/images/favicon.ico">
-      <title><?php echo $name;?></title>
+      <title><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8');?></title>
       <link href="res/css/bootstrap.min.css" rel="stylesheet">
       <script src="res/js/jquery-3.1.1.min.js"></script>
       <script src="https://cloud.tinymce.com/stable/tinymce.min.js<?php echo $tinyMCEAPI?>"></script>
@@ -121,7 +121,7 @@ $('#open').click(function() {
          <div class="well">
             <div class="row">
                <div class="col-md-8">
-                  <h1><?php echo $name?></h1>
+                  <h1><?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8')?></h1>
                </div>
                <div class="col-md-4 pull-right">
 
@@ -139,7 +139,7 @@ $('#open').click(function() {
                   <h4>Version: <?php if (empty($version)) {
                      echo "N/A";
                      } else {
-                     echo $version;
+                     echo htmlspecialchars($version, ENT_QUOTES, 'UTF-8');
                      }?></h4>
                </div>
                <!--<div class="col-md-4 pull-right">
@@ -151,21 +151,21 @@ $('#open').click(function() {
             </div>
          </div>
       </div>
-      <?php if ($broken == '1') { echo "
+      <?php if ($broken == '1') { ?>
         <div class='container'>
           <div class='well'>
             <div class='row'>
               <div class='col-md-8'>
                 <h4>This mission is broken due to:</h4>
-                <p>$brokentype</p>
+                <p><?php echo htmlspecialchars($brokentype, ENT_QUOTES, 'UTF-8'); ?></p>
                 <br/>
                 <h4>Description:</h4>
-                $brokendes
+                <p><?php echo htmlspecialchars($brokendes, ENT_QUOTES, 'UTF-8'); ?></p>
               </div>
             </div>
           </div>
-        </div>";
-    } ?>
+        </div>
+      <?php } ?>
       <div class="container">
          <div class="well">
            <div class="row">
@@ -175,21 +175,21 @@ $('#open').click(function() {
            </div>
             <div class="row">
                <div class="col-md-4">
-                  <h4>Author: <?php echo $author ?></h4>
+                  <h4>Author: <?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8') ?></h4>
                </div>
                <div class="col-md-4">
-                  <h4>Game Mode: <?php echo $gamemode ?></h4>
+                  <h4>Game Mode: <?php echo htmlspecialchars($gamemode, ENT_QUOTES, 'UTF-8') ?></h4>
                </div>
                <div class="col-md-4">
-                  <h4>Map: <?php echo $terrain ?></h4>
+                  <h4>Map: <?php echo htmlspecialchars($terrain, ENT_QUOTES, 'UTF-8') ?></h4>
                </div>
             </div>
             <div class="row">
                <div class="col-md-4">
-                  <h4>Min Players: <?php echo $minplayers ?></h4>
+                  <h4>Min Players: <?php echo (int) $minplayers ?></h4>
                </div>
                <div class="col-md-4">
-                  <h4>Max Players: <?php echo $maxplayers ?></h4>
+                  <h4>Max Players: <?php echo (int) $maxplayers ?></h4>
                </div>
                <div class="col-md-4">
                </div>
@@ -229,7 +229,7 @@ $('#open').click(function() {
                <div class="col-lg-12">
                   <h2>Description</h2>
                   <br/>
-                  <p><?php echo htmlspecialchars_decode($description) ?></p>
+                  <?php echo $description /* HTML stored via TinyMCE; sanitised by HTMLPurifier on write */ ?>
                </div>
             </div>
          </div>
@@ -275,10 +275,11 @@ $('#open').click(function() {
       <?php }
          }
          catch (PDOException $e) {
-                 echo "Error: " . $e->getMessage();
+                 error_log("mission.php PDO error: " . $e->getMessage());
+                 http_response_code(500);
+                 echo "A database error occurred.";
+                 exit;
          }
-
-         $conn = null;
          ?>
       <div class="container">
          <div class="well">
@@ -287,50 +288,40 @@ $('#open').click(function() {
                   <h2>Release Notes</h2>
                </div>
             </div>
-            <?php         $dsn = "mysql:host=$servername;dbname=$dbname;";
-               $opt = [
-                   PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                   PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                  PDO::ATTR_EMULATE_PREPARES   => false
-                 ];
-               $pdo = new PDO($dsn, $username, $password, $opt);
-               $stmt= $pdo->query("SELECT * from releasenotes WHERE id='$id' ORDER BY note_id DESC")->fetchAll();
-               if (empty($stmt)) {
-                 echo '<div class="container">
-                   <div class="row">
-                     <div class="col-md"><p>None yet!</p>
-                     </div>
-                   </div>
-                   </div>';
+            <?php
+               $pdo = get_db();
+               $rnStmt = $pdo->prepare("SELECT * FROM releasenotes WHERE id = ? ORDER BY note_id DESC");
+               $rnStmt->execute([$id]);
+               $releaseNotes = $rnStmt->fetchAll();
+               if (empty($releaseNotes)) {
+                 echo '<div class="container"><div class="row"><div class="col-md"><p>None yet!</p></div></div></div>';
                } else {
-               foreach ($stmt as $row)
-                {
-                  echo '<div class="container">
+                 foreach ($releaseNotes as $row) { ?>
+                  <div class="container">
                   <div class="well">
                       <div class="row">
                         <div class="col-md-6">
                           <h4>Version</h4>
-                          <p>' . $row['version']. '</p>
+                          <p><?php echo htmlspecialchars($row['version'], ENT_QUOTES, 'UTF-8'); ?></p>
                         </div>
                         <div class="col-md-6">
                           <h4>Date</h4>
-                          <p>' . $row['date']. '</p>
+                          <p><?php echo htmlspecialchars($row['date'], ENT_QUOTES, 'UTF-8'); ?></p>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-12">
                           <h3>Changelog</h3>
                           <div class="well">
-                          <p>' . $row['note']. '</p>
+                            <?php echo $row['note'] /* HTML stored via TinyMCE; sanitised by HTMLPurifier on write */ ?>
                           </div>
                         </div>
                       </div>
-                      </div>
-                    </div>
-                    <hr/>';
-                  }
-                };
-                $stmt=null;
+                  </div>
+                  </div>
+                  <hr/>
+                 <?php }
+               }
                ?>
          </div>
       </div>
@@ -345,49 +336,39 @@ $('#open').click(function() {
         <button type="button" class="btn btn-primary-outline" name="addcomment" data-toggle="modal" data-target="#commentModal">Add Comment</button>
       </div>
     </div>
-    <?php         $dsn = "mysql:host=$servername;dbname=$dbname;";
-       $opt = [
-           PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-           PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-          PDO::ATTR_EMULATE_PREPARES   => false
-         ];
-       $pdo = new PDO($dsn, $username, $password, $opt);
-       $stmt= $pdo->query("SELECT * from comments WHERE id='$id' ORDER BY comment_id DESC")->fetchAll();
-       if (empty($stmt)) {
-         echo '<div class="container">
-           <div class="row">
-             <div class="col-md"><p>None yet!</p>
-             </div>
-           </div>
-           </div>';
+    <?php
+       $pdo = get_db();
+       $cStmt = $pdo->prepare("SELECT * FROM comments WHERE id = ? ORDER BY comment_id DESC");
+       $cStmt->execute([$id]);
+       $comments = $cStmt->fetchAll();
+       if (empty($comments)) {
+         echo '<div class="container"><div class="row"><div class="col-md"><p>None yet!</p></div></div></div>';
        } else {
-       foreach ($stmt as $row)
-        {
-          echo '<div class="container-fluid">
+         foreach ($comments as $row) { ?>
+          <div class="container-fluid">
               <div class="well">
               <div class="row">
                 <div class="col-md-4">
                   <h4>Version</h4>
-                  <p>' . $row['version']. '</p>
+                  <p><?php echo htmlspecialchars($row['version'], ENT_QUOTES, 'UTF-8'); ?></p>
                 </div>
                 <div class="col-md-6">
                   <h4>Date</h4>
-                  <p>' . $row['date']. '</p>
+                  <p><?php echo htmlspecialchars($row['date'], ENT_QUOTES, 'UTF-8'); ?></p>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <h4>Name</h4>
-                  <p>' . $row['name']. '</p>
+                  <p><?php echo htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); ?></p>
                   <h4>Comment</h4>
-                  <p>' . $row['comment']. '</p>
+                  <p><?php echo $row['comment'] /* HTML stored via TinyMCE; sanitised by HTMLPurifier on write */ ?></p>
                 </div>
               </div>
               </div>
-            </div> ';
-          }
-        };
-        $stmt=null;
+            </div>
+         <?php }
+       }
        ?>
   </div>
 </div>
@@ -403,7 +384,7 @@ $('#open').click(function() {
             <h4 class="modal-title">Add Comment</h4>
          </div>
          <div class="modal-body">
-           <h5>For Version: <?php echo $version ?></h5>
+           <h5>For Version: <?php echo htmlspecialchars($version, ENT_QUOTES, 'UTF-8') ?></h5>
            <div class="well">
            <form class="form-horizontal" id="addComment" action="addComment.php" method="post"  enctype="multipart/form-data" role="form" novalidate>
              <div class="form-group">
@@ -461,7 +442,7 @@ $('#open').click(function() {
                            </div>
                            <label for="author" class="col-sm-2">Author</label>
                            <div class="col-sm-4">
-                              <input type="text" class="form-control" name="author" id="author" value="<?php echo $author ?>" required>
+                              <input type="text" class="form-control" name="author" id="author" value="<?php echo htmlspecialchars($author, ENT_QUOTES, 'UTF-8') ?>" required>
                            </div>
                         </div>
                         <div class="form-group">
@@ -476,26 +457,25 @@ $('#open').click(function() {
                            </div>
                            <label for="version" class="col-sm-2">Version</label>
                            <div class="col-sm-4">
-                              <input type="text" class="form-control" name="version" id="version" value="<?php echo $version ?>" required>
+                              <input type="text" class="form-control" name="version" id="version" value="<?php echo htmlspecialchars($version, ENT_QUOTES, 'UTF-8') ?>" required>
                            </div>
                         </div>
                         <div class="form-group">
                            <label for="minplayers" class="col-sm-2">Minimum Players</label>
                            <div class="col-sm-4">
-                              <input type="text" class="form-control" name="minplayers" id="minplayers" value="<?php echo $minplayers ?>" required>
+                              <input type="text" class="form-control" name="minplayers" id="minplayers" value="<?php echo (int) $minplayers ?>" required>
                            </div>
                            <label for="maxplayers" class="col-sm-2">Maximum Players</label>
                            <div class="col-sm-4">
-                              <input type="text" class="form-control" name="maxplayers" id="maxplayers" value="<?php echo $maxplayers ?>" required>
+                              <input type="text" class="form-control" name="maxplayers" id="maxplayers" value="<?php echo (int) $maxplayers ?>" required>
                            </div>
                         </div>
                         <div class="form-group">
                            <label for="terrain" class="col-sm-2">Map</label>
                            <div class="col-sm-4">
                               <select class="form-control" name="terrain" id="terrain" required>
-                                 <option selected="selected"><?php echo $terrain; ?></option>
-                                 <
-                                 <option> Altis</option>
+                                 <option selected="selected"><?php echo htmlspecialchars($terrain, ENT_QUOTES, 'UTF-8'); ?></option>
+                                 <option>Altis</option>
                                  <option>Bukovina</option>
                                  <option>Bystrica</option>
                                  <option>Chernarus</option>
@@ -531,7 +511,7 @@ $('#open').click(function() {
                            <label for="gamemode" class="col-sm-2">Game Mode</label>
                            <div class="col-sm-4">
                               <select class="form-control" name="gamemode" is="gamemode" required>
-                                 <option selected="selected"><?php echo $gamemode ?></option>
+                                 <option selected="selected"><?php echo htmlspecialchars($gamemode, ENT_QUOTES, 'UTF-8') ?></option>
                                  <option>Undefined</option>
                                  <option>Deathmatch</option>
                                  <option>Capture The Flag</option>
@@ -553,7 +533,7 @@ $('#open').click(function() {
                         <div class="form-group">
                            <label for="description" class="col-sm-2">Description</label>
                            <div class="col-sm-10">
-                              <textarea rows="8" class="form-control" name="description" id="description" required><?php echo $description ?></textarea>
+                              <textarea rows="8" class="form-control" name="description" id="description" required><?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8') ?></textarea>
                            </div>
                         </div>
                         <button type="submit" class="btn btn-warning" name="submit" id="submit">Save Changes</button>
